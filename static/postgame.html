@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PrimeCast · Postgame</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Oswald:wght@500;600;700&family=Rajdhani:wght@600;700&display=swap');
+
+:root{font-family:Arial,Segoe UI,sans-serif;color:#f4f7ff;font-synthesis:none}*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:transparent;overflow:hidden}#stage{position:absolute;width:1920px;height:1080px;transform-origin:top left;left:0;top:0}.screen{position:absolute;inset:70px 75px 67px;background:linear-gradient(115deg,rgba(4,19,39,.97),rgba(7,11,28,.96) 50%,rgba(39,7,26,.95));border-top:4px solid #de9a46;box-shadow:0 14px 60px #0008;clip-path:polygon(1% 0,100% 0,99% 100%,0 100%);padding:28px 38px 30px}.head{height:156px;display:grid;grid-template-columns:1fr 370px 1fr;align-items:center;gap:15px;border-bottom:2px solid #ffffff25}.side-head{display:flex;align-items:center;gap:19px;min-width:0}.side-head.right{justify-content:flex-end;text-align:right}.logo{width:105px;height:105px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 3px 8px #0009)}.team-name{font:42px/1 var(--cast-font,Impact),'Arial Narrow',sans-serif;letter-spacing:1px;text-transform:uppercase;overflow-wrap:anywhere}.side-head .outcome{font:700 20px Arial;margin-top:11px;color:#64ccff}.right .outcome{color:#ff8da0}.score{text-align:center}.score-line{display:flex;align-items:center;justify-content:center;gap:22px;font:92px/.95 var(--cast-font,Impact),'Arial Narrow',sans-serif}.score-line em{font:38px var(--cast-font,Impact);color:#a2aabb;font-style:normal}.match-time{font:23px var(--cast-font,Impact);letter-spacing:2px;color:#b5bccb;margin-top:6px}.topline{font:16px var(--cast-font,Impact);letter-spacing:4px;color:#d9a441;margin-bottom:12px}.body-grid{display:grid;grid-template-columns:43% 57%;gap:18px;height:calc(100% - 164px);padding-top:20px}.left-panel,.right-panel{min-height:0}.section-title{font:27px var(--cast-font,Impact);letter-spacing:1px;color:white;margin:0 0 10px}.stats{display:grid;gap:3px}.stat-row{display:grid;grid-template-columns:1fr 1.22fr 1fr;align-items:center;text-align:center;min-height:58px;border-bottom:1px solid #ffffff35}.stat-row .num{font:31px var(--cast-font,Impact)}.stat-row .num.b{color:var(--cast-blue,#5bd0ff)}.stat-row .num.r{color:var(--cast-red,#ff889b)}.stat-row .label{font:18px var(--cast-font,Impact);letter-spacing:.6px;color:#dce2ed}.bans{margin-top:22px;display:flex;justify-content:space-between;gap:20px}.ban-team{display:flex;gap:8px}.ban-team img{height:50px;width:50px;object-fit:cover;border:1px solid #ffffff65;background:#141926}.ban-team.right{flex-direction:row-reverse}.damage{padding:0 2px}.damage-row{display:grid;grid-template-columns:49px 1fr 1fr 49px;align-items:center;gap:10px;height:58px}.damage-row img{height:48px;width:48px;object-fit:cover;border:1px solid #ffffff70;background:#161a22}.damage-row .bar-area{position:relative;height:42px;display:flex;align-items:center}.damage-row .bar-area.r{justify-content:flex-end}.bar{height:17px;width:var(--bar-width,0%);max-width:100%;background:var(--cast-blue,#37c8fa);border-radius:2px;box-shadow:0 0 13px #20b8ff45;transition:width 1.6s cubic-bezier(.16,1,.3,1)}.bar.red{background:var(--cast-red,#fb6c8c);box-shadow:0 0 13px #fc617b45}.value{position:absolute;top:-5px;font:15px var(--cast-font,Impact);color:#fff}.b .value{left:0}.r .value{right:0}.bar-area .bar{margin-top:20px}.gold{margin-top:24px}.chart-box{height:223px;border:1px solid #ffffff30;background:#050d1b70;position:relative;padding:10px}.chart-box svg{width:100%;height:100%;overflow:visible}.gold-note{font:12px Arial;color:#bcc5d0;text-align:center}.axis{stroke:#ffffff22;stroke-width:1}.zero{stroke:#ffffff88;stroke-width:1.3;stroke-dasharray:8 6}.line{fill:none;stroke:#5ad3ff;stroke-width:4;stroke-linejoin:round;stroke-linecap:round;filter:drop-shadow(0 0 4px #19bdfe80)}.line.neg{stroke:#ff6a88}.chart-label{fill:#c5d1df;font:15px Arial}.chart-x{fill:#c5d1df;font:14px Arial}.empty{font:34px var(--cast-font,Impact);text-align:center;margin-top:45px;color:#c1cad4}.unavail{font-size:14px;color:#8d98aa}.screen{animation:enter 1.75s cubic-bezier(.12,.8,.2,1) both}.screen .head,.screen .body-grid{animation:fadeup 1.45s .35s both}@keyframes enter{from{opacity:0;transform:translateY(85px)}to{opacity:1;transform:translateY(0)}}@keyframes fadeup{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* v1.13: flat rectangular postgame, Worlds-style header arrangement */
+.screen{border:0;clip-path:none;top:68px;bottom:68px;padding:22px 38px 28px}
+.topline{display:none}
+.head{height:160px;display:grid;grid-template-columns:minmax(0,1fr) 125px 300px 125px minmax(0,1fr);gap:0;align-items:center;border-bottom:2px solid #ffffff36}
+.side-head{gap:16px;min-width:0}.side-head.right{justify-content:flex-end}
+.logo{width:92px;height:92px}
+.team-meta{min-width:0}.team-line{display:flex;align-items:center;gap:18px;min-width:0;flex-wrap:wrap}
+.side-head.right .team-line{justify-content:flex-end}
+.team-name{font-size:38px;line-height:1.05;overflow-wrap:normal;word-break:normal}
+.side-head .outcome{margin:0;font:26px var(--cast-font,Impact),'Arial Narrow',sans-serif;letter-spacing:1px;white-space:nowrap}
+.header-score{font:78px/.95 var(--cast-font,Impact),'Arial Narrow',sans-serif;text-align:center;white-space:nowrap}
+.score{height:120px;border-left:2px solid #ffffff85;border-right:2px solid #ffffff85;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.match-time{font:99px/.92 var(--cast-font,Impact),'Arial Narrow',sans-serif;letter-spacing:0;color:#f4f7ff;margin:0;white-space:nowrap}
+.time-caption{font:22px var(--cast-font,Impact),'Arial Narrow',sans-serif;letter-spacing:1px;color:#c9d2e1;margin-top:7px}
+.body-grid{height:calc(100% - 160px);padding-top:19px}
+.left-panel>.stats{margin-top:0}
+.gold{margin-top:23px}.chart-box{height:251px;padding:10px 10px 3px}
+.chart-label{font:15px Arial, sans-serif}.chart-x{font:14px Arial,sans-serif}
+.chart-minor{stroke:#ffffff19;stroke-width:1;vector-effect:non-scaling-stroke}
+.chart-zero{stroke:#ffffff9a;stroke-width:1.4;stroke-dasharray:7 6;vector-effect:non-scaling-stroke}
+.chart-area-blue{fill:url(#blueLeadFill)}.chart-area-red{fill:url(#redLeadFill)}
+.chart-line-blue{fill:none;stroke:var(--cast-blue,#27c5fb);stroke-width:3.6;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.chart-line-red{fill:none;stroke:var(--cast-red,#fa6488);stroke-width:3.6;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+
+/* v1.14: precise chart labels and broadcast spacing */
+.header-score{font-size:78px}
+.match-time{font-size:84px}
+.side-head{position:relative}
+.side-head:not(.right){padding-right:88px}
+.side-head.right{padding-left:88px}
+.side-head .team-line{display:flex;min-width:0;flex-wrap:nowrap}
+.side-head .team-name{font-size:36px}
+.side-head:not(.right) .outcome{position:absolute;right:8px;top:50%;transform:translateY(-50%)}
+.side-head.right .outcome{position:absolute;left:8px;top:50%;transform:translateY(-50%)}
+.left-panel>.stats{margin-top:39px}
+.damage-row .value{top:2px}
+.zero,.chart-zero{stroke-dasharray:none}
+.ban-placeholder{font:32px var(--cast-font,Impact),'Arial Narrow',sans-serif;color:#c7d0df;min-width:50px;text-align:center}
+/* v1.17: readable values with visible separation above the damage bars */
+.damage-row .value{font-size:19px;line-height:20px;top:-4px}
+/* v1.15: compact KDA figures and subtle gold-curve smoothing */
+.kda-num .slash{display:inline-block;margin:0 3px;font-size:.92em;opacity:.9}
+
+.damage-composition{margin-top:13px;padding:8px 4px 0;border-top:0}
+.damage-composition h3{font:20px var(--cast-font,Impact);margin:0 0 7px;letter-spacing:.5px}
+.damage-comp-row{display:grid;grid-template-columns:47px 1fr 145px;align-items:center;gap:10px;margin:6px 0;font:11px Arial}
+.damage-comp-row .label{font:16px var(--cast-font,Impact);color:#dee6ed}
+.damage-comp-track{height:15px;display:flex;background:#263346;overflow:hidden;border-radius:2px}
+.damage-comp-track span{height:100%}
+.damage-comp-values{font:12px var(--cast-font,Impact);color:#dde9fa;white-space:nowrap;text-align:right}
+.damage-comp-legend{font:11px Arial;color:#aab7c7;margin-top:6px}
+.stat-row{min-height:51px}.bans{margin-top:12px}.damage-composition{margin-top:9px}
+/* Broadcast damage split: two adjacent team tracks, percentages embedded in segments. */
+.damage-composition h3{margin-bottom:9px}
+.damage-comp-duo{display:grid;grid-template-columns:1fr 1fr;gap:23px;align-items:center}
+.damage-team{min-width:0}
+.damage-comp-track{height:28px;border-radius:1px;display:flex;width:100%}
+.damage-comp-track span{display:grid;place-items:center;min-width:0;overflow:hidden;white-space:nowrap;color:white;font:12px var(--cast-font,Impact);text-shadow:0 1px 2px #000b}
+
+.damage-comp-legend{display:flex;gap:18px;justify-content:center;align-items:center;margin-top:8px;font:12px Arial}
+.damage-comp-legend span{display:inline-flex;gap:6px;align-items:center}
+.damage-comp-legend i{width:11px;height:11px;display:inline-block;border-radius:2px}
+.chart-event-icon{filter:drop-shadow(0 1px 3px #000);pointer-events:none}.damage-comp-legend img{width:17px;height:17px;object-fit:contain;flex-shrink:0}.damage-comp-legend span{gap:7px}
+.first-blood-icon{filter:brightness(0) invert(1) drop-shadow(0 0 2px #fff)}
+
+/* v1.34: icon balance and more compact composition legend. */
+.damage-comp-legend{font-size:9.6px;gap:14px;margin-top:6px}
+.damage-comp-legend span{gap:5px}
+.damage-comp-legend img{width:13.5px;height:13.5px}
+</style></head><body><div id="stage"><div class="screen" id="screen"><div class="head"><div class="side-head"><img class="logo" id="logo-b" hidden><div class="team-meta"><div class="team-line"><span class="team-name" id="name-b">BLUE SIDE</span><span class="outcome" id="win-b"></span></div></div></div><div class="header-score left-score"><span id="kills-b">–</span></div><div class="score"><div class="match-time" id="duration">00:00</div><div class="time-caption">GAME TIME</div></div><div class="header-score right-score"><span id="kills-r">–</span></div><div class="side-head right"><div class="team-meta"><div class="team-line"><span class="outcome" id="win-r"></span><span class="team-name" id="name-r">RED SIDE</span></div></div><img class="logo" id="logo-r" hidden></div></div><div class="body-grid"><div class="left-panel"><div class="stats" id="stats"></div><div id="damage-composition" class="damage-composition"></div><div style="margin-top:19px"><h2 class="section-title">BANS</h2><div class="bans"><div class="ban-team" id="bans-b"></div><div class="ban-team right" id="bans-r"></div></div></div></div><div class="right-panel"><h2 class="section-title">DAMAGE DEALT TO CHAMPIONS</h2><div class="damage" id="damage"></div><div class="gold"><h2 class="section-title">GOLD DIFFERENCE OVER TIME</h2><div class="chart-box" id="gold-chart"></div></div></div></div></div></div>
+<script>
+
+const DEFAULT_VISUALS={blue_color:'#4DBBEB',red_color:'#F56C91',font:'Impact',show_first_blood:true,show_dragons:true,show_baron:true,show_swings:true,show_damage_composition:true,number_locale:'de-DE'};
+let broadcastPrefs={...DEFAULT_VISUALS};
+function updateBroadcastPreferences(p){
+ const previous=JSON.stringify(broadcastPrefs);
+ broadcastPrefs={...DEFAULT_VISUALS,...p};
+ const root=document.documentElement;
+ root.style.setProperty('--cast-blue',broadcastPrefs.blue_color);
+ root.style.setProperty('--cast-red',broadcastPrefs.red_color);
+ root.style.setProperty('--cast-font',JSON.stringify(broadcastPrefs.font)+', Impact, Arial, sans-serif');
+ if(previous!==JSON.stringify(broadcastPrefs))currentKey=null;
+}
+async function pollBroadcastPreferences(){try{const r=await fetch('/api/preferences',{cache:'no-store'});if(r.ok)updateBroadcastPreferences(await r.json())}catch(e){console.warn('Visual settings unavailable',e)}}
+pollBroadcastPreferences();setInterval(pollBroadcastPreferences,2500);
+
+const $=id=>document.getElementById(id);let currentKey='',refreshTimer=null;
+function resize(){let scale=Math.min(innerWidth/1920,innerHeight/1080);$('stage').style.transform=`scale(${scale})`; $('stage').style.left=((innerWidth-1920*scale)/2)+'px';$('stage').style.top=((innerHeight-1080*scale)/2)+'px'}addEventListener('resize',resize);resize();
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function n(v){return v===null||v===undefined?'–':Number(v).toLocaleString(broadcastPrefs.number_locale||'de-DE')}
+function short(v){return v===null||v===undefined?'–':Math.abs(v)>=1000?(v/1000).toLocaleString(broadcastPrefs.number_locale||'de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+'K':Number(v).toLocaleString(broadcastPrefs.number_locale||'de-DE')}
+function champUrl(champ){const name=String(champ||'');const names={FiddleSticks:'Fiddlesticks',MonkeyKing:'MonkeyKing'};return 'https://ddragon.leagueoflegends.com/cdn/16.22.1/img/champion/'+encodeURIComponent(names[name]||name)+'.png'}
+const IMG_VERSION='16.22.1';
+let championMap={};
+async function loadChampions(){try{const res=await fetch('https://ddragon.leagueoflegends.com/cdn/'+IMG_VERSION+'/data/en_US/champion.json');const c=(await res.json()).data;championMap=Object.fromEntries(Object.values(c).map(v=>[v.key,v.id]))}catch{}}
+function champFromId(id){return championMap[String(id)]||''}
+function imgEl(champ){let img=document.createElement('img');img.alt=champ||'Champion';if(champ){img.src=champUrl(champ)}else{img.style.visibility='hidden'}img.onerror=()=>{img.style.visibility='hidden'};return img}
+function smoothLine(pts,sx,sy){
+ // Mildly softened Catmull-Rom interpolation; keep every observed data point.
+ if(pts.length<2)return '';
+ let path=`M${sx(pts[0].minute).toFixed(2)} ${sy(pts[0].difference).toFixed(2)}`;
+ for(let i=0;i<pts.length-1;i++){
+  const a=pts[Math.max(i-1,0)], b=pts[i], c=pts[i+1], d=pts[Math.min(i+2,pts.length-1)];
+  const dx=sx(c.minute)-sx(b.minute);
+  // Horizontal handles only: no overshoot in time, reduced vertical tangents.
+  const slope1=(c.difference-a.difference)/Math.max(.001,c.minute-a.minute);
+  const slope2=(d.difference-b.difference)/Math.max(.001,d.minute-b.minute);
+  const strength=.28;
+  let cp1x=sx(b.minute)+dx*strength,cp2x=sx(c.minute)-dx*strength;
+  let cp1y=sy(b.difference+slope1*(c.minute-b.minute)*strength);
+  let cp2y=sy(c.difference-slope2*(c.minute-b.minute)*strength);
+  path+=` C${cp1x.toFixed(2)} ${cp1y.toFixed(2)} ${cp2x.toFixed(2)} ${cp2y.toFixed(2)} ${sx(c.minute).toFixed(2)} ${sy(c.difference).toFixed(2)}`;
+ }
+ return path;
+}
+function drawGraph(points, events=[], swing=null){
+ const root=$('gold-chart');
+ if(!Array.isArray(points)||points.length<2){root.innerHTML='<div class="empty" style="font-size:20px;margin-top:60px">TIMELINE UNAVAILABLE</div>';return;}
+ const values=points.map(p=>({minute:Number(p.minute),difference:Number(p.difference)})).filter(p=>Number.isFinite(p.minute)&&Number.isFinite(p.difference)).sort((a,b)=>a.minute-b.minute);
+ if(values.length<2){root.innerHTML='<div class="empty">TIMELINE UNAVAILABLE</div>';return;}
+ const w=850,h=215,left=62,right=15,top=18,bottom=27,plotW=w-left-right,plotH=h-top-bottom;
+ const end=Math.max(1,...values.map(p=>p.minute));
+ const rawHi=Math.max(0,...values.map(p=>p.difference)),rawLo=Math.min(0,...values.map(p=>p.difference));
+ // Use actual observed extrema for axis labels; only the plotted bounds get padding.
+ const extent=Math.max(1,rawHi-rawLo);
+ const pad=Math.max(80,extent*.055);
+ let upper=rawHi+pad,lower=rawLo-pad;
+ if(rawHi===0&&rawLo===0){upper=100;lower=-100;}
+ const sx=t=>left+(t/end)*plotW;
+ const sy=v=>top+(upper-v)/(upper-lower)*plotH;
+ const zero=sy(0),fmt=n=>(Math.abs(n)>=1000?(Math.abs(n)/1000).toLocaleString(broadcastPrefs.number_locale||'de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+'K':Math.round(Math.abs(n)).toLocaleString(broadcastPrefs.number_locale||'de-DE'));
+ const coords=v=>`${sx(v.minute).toFixed(2)},${sy(v.difference).toFixed(2)}`;
+ // Split each line segment exactly at the zero crossing. This allows a proper
+ // blue/negative-red gradient without changing color partway through a segment.
+ let runs=[],run=[values[0]],sign=values[0].difference<0?'red':'blue';
+ function addRun(){if(run.length>1)runs.push({sign,pts:run});}
+ for(let i=1;i<values.length;i++){
+  const prev=values[i-1],cur=values[i],other=cur.difference<0?'red':'blue';
+  if(prev.difference!==0&&cur.difference!==0&&((prev.difference<0)!==(cur.difference<0))){
+    let f=-prev.difference/(cur.difference-prev.difference),cross={minute:prev.minute+(cur.minute-prev.minute)*f,difference:0};
+    run.push(cross);addRun();run=[cross,cur];sign=other;
+  }else if(prev.difference===0&&other!==sign){addRun();run=[prev,cur];sign=other;}
+  else run.push(cur);
+ }
+ addRun();
+ const shapes=runs.map(({sign,pts})=>{
+  let line=smoothLine(pts,sx,sy);
+  let poly=`M${sx(pts[0].minute).toFixed(2)} ${zero.toFixed(2)} L${sx(pts[0].minute).toFixed(2)} ${sy(pts[0].difference).toFixed(2)} `+line.replace(/^M[^C]*/, '')+` L${sx(pts[pts.length-1].minute).toFixed(2)} ${zero.toFixed(2)} Z`;
+  return `<path class="chart-area-${sign}" d="${poly}"/><path class="chart-line-${sign}" d="${line}"/>`;
+ }).join('');
+ let guides='';
+ for(let t=5;t<end;t+=5)guides+=`<line class="chart-minor" x1="${sx(t)}" x2="${sx(t)}" y1="${top}" y2="${top+plotH}"/>`;
+ for(const v of [rawHi,0,rawLo].filter((v,i,a)=>a.indexOf(v)===i)){
+  guides+=`<line class="${v===0?'chart-zero':'axis'}" x1="${left}" x2="${w-right}" y1="${sy(v)}" y2="${sy(v)}"/><text class="chart-label" x="${left-8}" y="${sy(v)+5}" text-anchor="end">${v===0?'0':fmt(v)}</text>`;
+ }
+ let ticks=''; // Label only 0, 10, 20, 30 ...; retain all five-minute guide lines.
+ for(let t=0;t<=end;t+=10){ticks+=`<text class="chart-x" x="${sx(t)}" y="${top+plotH+20}" text-anchor="middle">${t}</text>`;}
+ let eventsSvg='';
+ const iconTypes={AIR_DRAGON:'cloud',FIRE_DRAGON:'infernal',WATER_DRAGON:'ocean',EARTH_DRAGON:'mountain',HEXTECH_DRAGON:'hextech',CHEMTECH_DRAGON:'chemtech',ELDER_DRAGON:'elder'};
+ for(const ev of (events||[])){
+  if(ev.type==='first_blood'&&!broadcastPrefs.show_first_blood)continue;
+  if(ev.type==='dragon'&&!broadcastPrefs.show_dragons)continue;
+  if(ev.type==='baron'&&!broadcastPrefs.show_baron)continue;
+  const t=Number(ev.minute);if(!Number.isFinite(t)||t<0||t>end)continue;
+  const col=ev.team_id===100?broadcastPrefs.blue_color:ev.team_id===200?broadcastPrefs.red_color:'#b7bec9';
+  const subtype=String(ev.subtype||'').toUpperCase();
+  const kind=ev.type==='first_blood'?'first_blood':ev.type==='baron'?'baron':(iconTypes[subtype]||'dragon');
+  // Static event marker: no hover tooltip or mouse interaction.
+  eventsSvg+=`<g pointer-events="none"><circle cx="${sx(t)}" cy="${top+plotH-11}" r="12.2" fill="#08101b" stroke="${col}" stroke-width="2"/><image class="chart-event-icon${kind==='first_blood'?' first-blood-icon':''}" href="/assets/objective/${kind}?v=${Math.floor(Date.now()/15000)}" x="${sx(t)-(kind==='first_blood'?7.2:9)}" y="${top+plotH-(kind==='first_blood'?18.2:20)}" width="${kind==='first_blood'?14.4:18}" height="${kind==='first_blood'?14.4:18}" preserveAspectRatio="xMidYMid meet"/></g>`;
+ }
+ let swingSvg='';
+ if(swing&&Number.isFinite(+swing.start)&&Number.isFinite(+swing.end)&&swing.end>swing.start&&swing.end<=end&&Math.abs(Number(swing.change))>=3000){
+   const x=sx(swing.start),x2=sx(swing.end),col=swing.change>=0?broadcastPrefs.blue_color:broadcastPrefs.red_color;
+   const label=(Math.abs(swing.change)/1000).toLocaleString(broadcastPrefs.number_locale||'de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+'K SWING';
+   // Restrict the highlight to the graph area between the curve and the 0g baseline.
+   const selected=values.filter(v=>v.minute>=swing.start&&v.minute<=swing.end);
+   function interp(time){for(let i=1;i<values.length;i++)if(values[i].minute>=time){const a=values[i-1],b=values[i],f=(time-a.minute)/Math.max(.001,b.minute-a.minute);return {minute:time,difference:a.difference+(b.difference-a.difference)*f}}return values.at(-1)}
+   const segment=[interp(swing.start),...selected.filter(v=>v.minute>swing.start&&v.minute<swing.end),interp(swing.end)];
+   const poly=segment.map(v=>`${sx(v.minute).toFixed(2)},${sy(v.difference).toFixed(2)}`).join(' ');
+   const shape=`${x.toFixed(2)},${zero.toFixed(2)} ${poly} ${x2.toFixed(2)},${zero.toFixed(2)}`;
+   const yLabel=top+8;
+   const mx=(x+x2)/2;
+   // A solid, compact caption avoids letters being intersected by dotted lines.
+   const textW=137;
+   const badgeX=Math.max(left+4,Math.min(w-right-textW-4,mx-textW/2));
+   // Highlight stays strictly between the measured gold lead and 0; the label
+   // lives above the chart grid so it cannot be obscured by the line or dashed guides.
+   swingSvg=`<g pointer-events="none"><polygon points="${shape}" fill="${col}" opacity=".37"/><line x1="${x}" y1="${zero}" x2="${x}" y2="${sy(segment[0].difference)}" stroke="${col}" stroke-width="1.5" stroke-dasharray="4 4"/><line x1="${x2}" y1="${zero}" x2="${x2}" y2="${sy(segment.at(-1).difference)}" stroke="${col}" stroke-width="1.5" stroke-dasharray="4 4"/><rect x="${badgeX}" y="${yLabel-8}" width="${textW}" height="24" rx="4" fill="#07101e" stroke="${col}" stroke-width="1.2"/><text x="${badgeX+textW/2}" y="${yLabel+8}" fill="#fff" text-anchor="middle" style="font: bold 14px Arial">${label}</text></g>`;
+ }
+ root.innerHTML=`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="Gold difference over time"><defs>
+ <linearGradient id="blueLeadFill" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="${broadcastPrefs.blue_color}" stop-opacity=".7"/><stop offset="1" stop-color="${broadcastPrefs.blue_color}" stop-opacity=".05"/></linearGradient>
+ <linearGradient id="redLeadFill" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="${broadcastPrefs.red_color}" stop-opacity=".08"/><stop offset="1" stop-color="${broadcastPrefs.red_color}" stop-opacity=".7"/></linearGradient>
+ </defs>${guides}${shapes}${swingSvg}${eventsSvg}${ticks}</svg>`;
+}
+function kdaHtml(t){return `<span class="kda-num">${[t.kills,t.deaths,t.assists].map(v=>esc(v)).join('<span class="slash">/</span>')}</span>`}
+function render(d){if(!d?.match){$('screen').style.display='none';return}let m=d.match,teams=m.teams||[];if(teams.length!==2)return;$('screen').style.display='';const tcfg=d.teams||[];for(let i=0;i<2;i++){const t=teams[i], side=i?'r':'b';$("name-"+side).textContent=tcfg[i]?.name|| (i?'RED SIDE':'BLUE SIDE');$("win-"+side).textContent=t.win?'WIN':'LOSS';$("kills-"+side).textContent=t.kills;const logo=$("logo-"+side);logo.hidden=false;logo.src=tcfg[i]?.logo ? tcfg[i].logo+'?v='+encodeURIComponent(d.logo_versions?.[i]||m.match_id) : '/default-team-logo.svg?v=125'}
+$('duration').textContent=String(Math.floor(m.duration/60)).padStart(2,'0')+':'+String(m.duration%60).padStart(2,'0');
+const metrics=[['KDA',t=>`${t.kills}/${t.deaths}/${t.assists}`],['GOLD',t=>short(t.gold)],['TURRETS',t=>t.objectives?.turrets],['DRAGONS',t=>t.objectives?.dragons],['ELDER DRAGONS',t=>t.objectives?.elders],['BARONS',t=>t.objectives?.barons],['RIFT HERALDS',t=>t.objectives?.heralds],['VOID GRUBS',t=>t.objectives?.voidgrubs]];
+$('stats').innerHTML=metrics.map(([label,fn])=>`<div class="stat-row"><span class="num b">${label==='KDA'?kdaHtml(teams[0]):esc(fn(teams[0])??'–')}</span><span class="label">${esc(label)}</span><span class="num r">${label==='KDA'?kdaHtml(teams[1]):esc(fn(teams[1])??'–')}</span></div>`).join('');
+// Physical / magic / true damage to champions, independent of SoloQ.
+ const compRoot=$('damage-composition');
+ compRoot.style.display=broadcastPrefs.show_damage_composition?'':'none';
+ compRoot.innerHTML='<h3>DAMAGE COMPOSITION</h3>';
+ // Riot damage recap convention: physical red/orange, magic blue, true white.
+ const compColors={physical:'#FF8C34',magic:'#7A6DFF',true:'#dbe5e9'};
+ const duo=document.createElement('div');duo.className='damage-comp-duo';
+ for(const [i,team] of teams.entries()){
+  const sums={physical:0,magic:0,true:0};
+  for(const player of team.players||[])for(const type of Object.keys(sums))sums[type]+=Number(player.damage_types?.[type]||0);
+  const total=Object.values(sums).reduce((a,b)=>a+b,0);
+  const wrapper=document.createElement('div');wrapper.className='damage-team';
+  const track=document.createElement('div');track.className='damage-comp-track';
+  if(total){for(const type of Object.keys(sums)){
+   const share=100*sums[type]/total,seg=document.createElement('span');seg.style.width=share+'%';seg.style.background=compColors[type];
+   seg.textContent=share>=10?Math.round(share)+'%':'';seg.title=type.toUpperCase()+': '+share.toLocaleString(broadcastPrefs.number_locale||'de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';track.append(seg);
+  }}else track.textContent='–';
+  wrapper.append(track);duo.append(wrapper);
+ }
+ compRoot.append(duo);
+ const legend=document.createElement('div');legend.className='damage-comp-legend';
+ for(const [type,color] of Object.entries(compColors)){const label=document.createElement('span');const mark=document.createElement('img');mark.src='/assets/damage/'+type;mark.alt='';mark.width=17;mark.height=17;label.append(mark,document.createTextNode(type.toUpperCase()));legend.append(label)}
+ compRoot.append(legend);
+const all=[...teams[0].players,...teams[1].players];let maxDamage=Math.max(1,...all.map(x=>x.damage));$('damage').replaceChildren();for(let i=0;i<5;i++){const a=teams[0].players[i],b=teams[1].players[i];let row=document.createElement('div');row.className='damage-row';row.append(imgEl(a.champion));for(const [p,side] of [[a,'b'],[b,'r']]){let wrap=document.createElement('div');wrap.className='bar-area '+side;let bar=document.createElement('div');bar.className='bar '+(side==='r'?'red':'');let val=document.createElement('div');val.className='value';val.textContent=short(p.damage);wrap.append(bar,val);row.append(wrap);setTimeout(()=>bar.style.width=Math.max(0,p.damage/maxDamage*100)+'%',200+i*170)}row.append(imgEl(b.champion));$('damage').append(row)}
+for(const i of [0,1]){const root=$('bans-'+(i?'r':'b'));root.replaceChildren();const bans=(teams[i].bans||[]).filter(id=>id>0);if(!bans.length && i===0){const dash=document.createElement('span');dash.className='ban-placeholder';dash.textContent='–';root.append(dash)}else for(const id of bans){root.append(imgEl(champFromId(id)))}}
+drawGraph(m.gold_points||[], m.events||[], broadcastPrefs.show_swings ? m.biggest_swing||null : null)}
+async function poll(){try{let r=await fetch('/api/postgame',{cache:'no-store'});let data=await r.json();let key=JSON.stringify({m:data.match?.match_id,updated:data.match?.updated,teams:data.teams,logos:data.logo_versions,first:data.match?.teams?.[0]?.team_id});if(key!==currentKey){currentKey=key;render(data)}}catch(e){console.warn('Postgame Overlay',e)}}
+setInterval(()=>{
+  const stamp=Date.now();
+  document.querySelectorAll('.chart-event-icon').forEach(el=>{
+    const url=el.getAttribute('href')||'';
+    if(url.startsWith('/assets/objective/'))
+      el.setAttribute('href',url.split('?')[0]+'?v='+stamp);
+  });
+},30000);
+(async()=>{await loadChampions();await poll();setInterval(poll,2500)})();
+</script></body></html>

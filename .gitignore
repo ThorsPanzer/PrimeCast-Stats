@@ -1,0 +1,39 @@
+# User configuration and private API credentials
+config.json
+*.env
+.env*
+!.env.example
+
+# SQLite data and backup files
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-shm
+*.db-wal
+*.bak
+
+# Python and editor artifacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# User-uploaded team logos and downloaded Riot/community assets
+static/logos/
+static/cached_rank_icons/*.png
+static/cached_rank_icons/*.webp
+static/lanes/*.png
+static/lanes/*.webp
+static/lanes/*.svg
+static/objectives/*.png
+static/damage-icons/*.png
+
+# Local temporary files
+*.tmp
+*.log
+*.zip

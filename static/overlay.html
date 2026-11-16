@@ -1,0 +1,164 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PrimeCast · Matchups</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Oswald:wght@500;600;700&family=Rajdhani:wght@600;700&display=swap');
+
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent;color:#fff;font-family:Arial,Helvetica,sans-serif}#stage{position:absolute;inset:0;pointer-events:none}
+/* A large camera-safe zone remains above the two matchup cards. */
+#match{position:absolute;bottom:6.6%;left:3.3%;width:93.4%;height:39%;display:grid;grid-template-columns:minmax(0,1fr) 18.8% minmax(0,1fr);align-items:stretch}
+.side{height:100%;position:relative;min-width:0;isolation:isolate;clip-path:polygon(5.4% 0,100% 0,94.6% 100%,0 100%);background:#071a28;border-top:3px solid var(--cast-blue,#318dc8);box-shadow:0 5px 24px #0008;animation:rise 2.2s both cubic-bezier(.16,1,.3,1)}
+.side.red{clip-path:polygon(0 0,94.6% 0,100% 100%,5.4% 100%);background:#2b101d;border-top-color:var(--cast-red,#de3c52);animation-delay:.32s}
+@keyframes rise{from{transform:translateY(240px);opacity:0}to{transform:translateY(0);opacity:1}}
+.side:before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,#0b3247ac 0%,#09203246 40%,#08182775 100%);pointer-events:none}.side.red:before{background:linear-gradient(270deg,#5b1729ad,#2d101d46 45%,#25101a77)}
+.side:after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(0deg,#040914cf 0%,transparent 48%)}
+.art-layer{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}.art{position:absolute;inset:0;background-size:cover;background-position:center 30%;opacity:0;transition:opacity 1.2s ease-in-out;filter:saturate(.85) contrast(1.08)}.side.blue .art{background-position:58% 30%}.side.red .art{background-position:42% 30%}.art.visible{opacity:.90}
+.side-ui{position:absolute;inset:0;z-index:3;padding:23px 52px 24px 51px;display:flex;flex-direction:column;justify-content:flex-start;min-width:0}.red .side-ui{padding:23px 51px 24px 52px;align-items:stretch;text-align:right}
+/* Stable team header, never replaced or animated on role changes. */
+.team-header{display:flex;gap:12px;align-items:center;min-height:76px;margin-bottom:20px;color:var(--cast-blue,#70c2ee);font:clamp(16px,1.4vw,26px) var(--cast-font,Impact),'Arial Narrow',sans-serif;letter-spacing:.7px;text-shadow:0 3px 8px #000c}.red .team-header{justify-content:flex-end;color:var(--cast-red,#ff8293)}.team-logo{width:72px;height:72px;object-fit:contain;flex:none;filter:drop-shadow(0 3px 5px #000b)}
+.team-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stats{min-width:0;min-height:0;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:3px}.name{font:clamp(27px,2.2vw,44px)/1.08 var(--cast-font,Impact),'Arial Narrow',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.6px;text-shadow:0 3px 10px #000c;text-transform:uppercase}.tag{font:clamp(12px,1vw,19px) var(--cast-font,Impact),'Arial Narrow',sans-serif;color:#d9e1ea;vertical-align:baseline;margin-left:7px}.rank{font:clamp(17px,1.32vw,26px)/1.3 var(--cast-font,Impact),'Arial Narrow',sans-serif;text-shadow:0 2px 6px #000}.numbers{font:700 clamp(11px,.91vw,18px)/1.4 Arial,sans-serif;text-shadow:0 2px 5px #000;margin-top:2px}
+.champs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px;max-width:485px}.red .champs{margin-left:auto}.champ{min-width:0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0}
+.champ img{display:block;width:100%;height:auto;aspect-ratio:1 / 1;object-fit:contain;min-width:0;min-height:0;max-width:84px;max-height:84px;margin-bottom:8px;border:2px solid #8295a3;background:#0a1824;box-shadow:0 3px 10px #000a;flex:none}
+.champ:first-child img{border:3px solid #ffe9ad;box-shadow:0 0 0 3px #c48b23,0 0 20px 4px #ffd17abb,0 5px 12px #000b}
+.champ .champ-stat{display:block;width:100%;font:700 clamp(12px,.85vw,17px)/1.3 Arial,sans-serif;white-space:nowrap;letter-spacing:0;text-shadow:0 2px 5px #000c}
+.champ .champ-stat:last-child{font-size:clamp(11px,.73vw,14px);color:#e5e9ec;font-weight:600}
+.empty{font:20px var(--cast-font,Impact),sans-serif;letter-spacing:1px;min-height:110px;display:flex;align-items:center}.red .empty{justify-content:flex-end}.flag{font:12px Arial;color:#ffcb97;margin-top:3px}
+/* Static VS is the geometric center of the middle column; the role icon is centered above it. */
+.middle{position:relative;text-align:center;text-shadow:0 3px 8px #000a;z-index:5;animation:middle-in 1.65s .65s both cubic-bezier(.16,1,.3,1)}
+@keyframes middle-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.vs{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:clamp(54px,4.35vw,87px)/.95 var(--cast-font,Impact),'Arial Narrow',sans-serif;letter-spacing:1px;white-space:nowrap}
+.season{position:absolute;top:calc(50% + 59px);left:50%;transform:translateX(-50%);font:clamp(12px,.98vw,20px) var(--cast-font,Impact),'Arial Narrow',sans-serif;letter-spacing:1px;color:#e3e5eb;white-space:nowrap}
+/* Flat, gentle role change — no cylinder, 3D perspective, or color tint. */
+.role-icon{position:absolute;left:50%;top:calc(50% - 169px);width:92px;height:92px;object-fit:contain;display:block;opacity:1;transform:translateX(-50%);filter:drop-shadow(0 2px 5px #0009)}
+@keyframes role-fade-out{from{opacity:1;transform:translateX(-50%)}to{opacity:0;transform:translateX(calc(-50% + 12px))}}
+@keyframes role-fade-in{from{opacity:0;transform:translateX(calc(-50% - 12px))}to{opacity:1;transform:translateX(-50%)}}
+.role-icon.role-out{animation:role-fade-out .64s ease-in-out both}
+.role-icon.role-in{animation:role-fade-in .96s ease-in-out both}
+@media(prefers-reduced-motion:reduce){.role-icon.role-out,.role-icon.role-in{animation-duration:.01ms}}
+/* Only role-specific content fades, never the art frame, logos, teams, or VS. */
+.rank-row{display:flex;align-items:center;gap:9px;min-height:36px}.red .rank-row{flex-direction:row-reverse}
+.rank-badge{width:61px;height:57px;position:relative;overflow:hidden;flex:none;display:block;filter:drop-shadow(0 2px 5px #000a)}
+.rank-badge img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:100%;height:100%;object-fit:contain;max-width:none;max-height:none}
+/* Riot's wide 1280 x 720 PNGs have ~75% transparent padding. The source is preserved. */
+.rank-badge img.wide-rank{width:232px;height:auto;object-fit:fill}
+.stats.switch-out{opacity:0;transform:translateY(-7px);transition:opacity .62s ease-in-out,transform .62s ease-in-out}.stats.switch-in{animation:stats-in .9s both cubic-bezier(.16,1,.3,1)}@keyframes stats-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}.stats.switch-in .champ{animation:chip-in .85s both cubic-bezier(.16,1,.3,1);animation-delay:calc(var(--i)*125ms + 280ms)}@keyframes chip-in{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1100px){#match{height:47%;grid-template-columns:1fr 15% 1fr}.side-ui{padding:12px 27px}.red .side-ui{padding:12px 27px}.team-logo{width:55px;height:55px}.team-header{min-height:55px;margin-bottom:12px}.champs{gap:5px}.champ .champ-stat{font-size:10px}}
+</style></head><body><div id="stage"><div id="match"><section class="side blue" id="left"><div class="art-layer"><div class="art"></div><div class="art"></div></div><div class="side-ui"><div class="team-header"></div><div class="stats"></div></div></section><div class="middle"><img class="role-icon" id="role-icon" alt="Role icon"><div class="vs">VS</div><div class="season" id="season">SOLOQ - S26</div></div><section class="side red" id="right"><div class="art-layer"><div class="art"></div><div class="art"></div></div><div class="side-ui"><div class="team-header"></div><div class="stats"></div></div></section></div></div><script>
+
+const DEFAULT_VISUALS={blue_color:'#4DBBEB',red_color:'#F56C91',font:'Impact',show_first_blood:true,show_dragons:true,show_baron:true,show_swings:true,show_damage_composition:true,number_locale:'de-DE'};
+let broadcastPrefs={...DEFAULT_VISUALS};
+function updateBroadcastPreferences(p){
+ broadcastPrefs={...DEFAULT_VISUALS,...p};
+ const root=document.documentElement;
+ root.style.setProperty('--cast-blue',broadcastPrefs.blue_color);
+ root.style.setProperty('--cast-red',broadcastPrefs.red_color);
+ root.style.setProperty('--cast-font',JSON.stringify(broadcastPrefs.font)+', Impact, Arial, sans-serif');
+}
+async function pollBroadcastPreferences(){try{const r=await fetch('/api/preferences',{cache:'no-store'});if(r.ok)updateBroadcastPreferences(await r.json())}catch(e){console.warn('Visual settings unavailable',e)}}
+pollBroadcastPreferences();setInterval(pollBroadcastPreferences,2500);
+
+const roles=['TOP','JUNGLE','MID','ADC','SUPPORT'];const params=new URLSearchParams(location.search),fixed=roles.indexOf((params.get('role')||'').toUpperCase()),demo=params.get('demo')==='1';const $=id=>document.getElementById(id);let data=null,shown=-1,lastRevision=-1,ddVersion='16.1.1';let currentArt={left:'',right:''},artGeneration={left:0,right:0},revision=0;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pretty={Chogath:"Cho'Gath",LeeSin:'Lee Sin',KogMaw:"Kog'Maw",Khazix:"Kha'Zix",RekSai:"Rek'Sai",Velkoz:"Vel'Koz",Kaisa:"Kai'Sa",Belveth:"Bel'Veth",Nunu:'Nunu & Willump',MissFortune:'Miss Fortune',TwistedFate:'Twisted Fate',MasterYi:'Master Yi',JarvanIV:'Jarvan IV',XinZhao:'Xin Zhao',AurelionSol:'Aurelion Sol',TahmKench:'Tahm Kench',DrMundo:'Dr. Mundo',Renata:'Renata Glasc',MonkeyKing:'Wukong'};
+const displayChamp=x=>pretty[x]||x;
+// Rank emblems are served through the local backend, cached on disk and retried via the official CommunityDragon URL if needed.
+const rankIcon=t=>/^(IRON|BRONZE|SILVER|GOLD|PLATINUM|EMERALD|DIAMOND|MASTER|GRANDMASTER|CHALLENGER)$/.test(t)?'/assets/rank/'+t.toLowerCase()+'.png':'';
+const remoteRankIcon=t=>'https://raw.communitydragon.org/16.2/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblem/emblem-'+t.toLowerCase()+'.png';
+const roleIcon=r=>({TOP:'top',JUNGLE:'jungle',MID:'mid',ADC:'adc',SUPPORT:'support'})[r] ? '/assets/role/'+({TOP:'top',JUNGLE:'jungle',MID:'mid',ADC:'adc',SUPPORT:'support'})[r]+'.png' : '';
+// A simple, non-3D role transition; permanent elements (VS, season) never change.
+let roleTransitionId=0;
+function animateRoleCylinder(role){
+ const img=$('role-icon'),run=++roleTransitionId;
+ img.classList.remove('role-in','role-out');
+ void img.offsetWidth;
+ img.classList.add('role-out');
+ setTimeout(()=>{
+  if(run!==roleTransitionId)return;
+  setRoleIcon(role);
+  img.classList.remove('role-out');
+  void img.offsetWidth;
+  img.classList.add('role-in');
+ },640);
+}
+// Always use locally served raster PNGs: no SVG fallbacks in OBS.
+function roleFallback(img){
+ const attemptedRole=img.dataset.role;
+ img.style.visibility='hidden';
+ const n=Number(img.dataset.retries||0);
+ if(n>=20)return;
+ img.dataset.retries=String(n+1);
+ setTimeout(()=>{
+   if(img.dataset.role!==attemptedRole)return;
+   img.src=roleIcon(attemptedRole)+'?retry='+Date.now();
+ },30000);
+}
+function setRoleIcon(role){const img=$('role-icon');img.dataset.role=role;img.dataset.retries='0';img.style.visibility='visible';img.onerror=()=>roleFallback(img);img.src=roleIcon(role);} 
+function rankFallback(img,tier){if(img.dataset.tried)return;img.dataset.tried='1';img.src=remoteRankIcon(tier);img.onerror=()=>{img.style.display='none'; console.error('Rank emblem could not be loaded:', tier, img.src)}}
+const slug=x=>({Wukong:'MonkeyKing','Nunu & Willump':'Nunu','Renata Glasc':'Renata','Cho\'Gath':'Chogath','Kha\'Zix':'Khazix','Rek\'Sai':'RekSai','Vel\'Koz':'Velkoz','Kog\'Maw':'KogMaw','Kai\'Sa':'Kaisa','Bel\'Veth':'Belveth','Lee Sin':'LeeSin'}[x]||x.replace(/[^A-Za-z0-9]/g,''));
+const artURL=x=>'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/'+encodeURIComponent(slug(x))+'_0.jpg';
+const iconURL=x=>'https://ddragon.leagueoflegends.com/cdn/'+ddVersion+'/img/champion/'+encodeURIComponent(slug(x))+'.png';
+async function ddragon(){const ac=new AbortController();const t=setTimeout(()=>ac.abort(),1800);try{const x=await(await fetch('https://ddragon.leagueoflegends.com/api/versions.json',{signal:ac.signal})).json();ddVersion=x[0]}catch{}finally{clearTimeout(t)}}
+function header(team,logo,right){return (right?'':'')+(logo?`<img class="team-logo" src="${esc(logo)}" alt="">`:'')+`<span class="team-label">${esc(team)}</span>`}
+function deNumber(value,decimals=1){if(value===null||value===undefined||value==='')return '—';const n=Number(value);return Number.isFinite(n)?n.toLocaleString(broadcastPrefs.number_locale||'de-DE',{minimumFractionDigits:decimals,maximumFractionDigits:decimals}):String(value)}
+function content(slot){let r=data?.results?.[slot];if(!r||r.error)return `<div class="empty">${r?.error?'NO STATS AVAILABLE':'NOT ASSIGNED'}</div>`;
+let parts=String(r.riot_id||'').split('#'),tier=String(r.tier||'').toUpperCase(),rank=[tier,...(!['MASTER','GRANDMASTER','CHALLENGER'].includes(tier)?[r.rank]:[])].filter(Boolean).join(' ')||'UNRANKED';
+return `<div class="name">${esc(parts[0])}${parts.length>1?`<span class="tag">#${esc(parts.slice(1).join('#'))}</span>`:''}</div><div class="rank-row">${rankIcon(tier)?`<span class="rank-badge"><img src="${rankIcon(tier)}" alt="${esc(tier)}" onload="this.classList.toggle('wide-rank',this.naturalWidth / Math.max(this.naturalHeight,1) > 1.45)" onerror="rankFallback(this,'${esc(tier)}')"></span>`:""}<div class="rank">${esc(rank)}${r.lp!=null?' · '+esc(r.lp)+' LP':''}</div></div><div class="numbers">${deNumber(r.winrate)}% WINRATE &nbsp;·&nbsp; ${deNumber(r.games,0)} RANKED GAMES</div><div class="champs">${(r.top||[]).slice(0,5).map((c,i)=>`<div class="champ" style="--i:${i}" title="${esc(displayChamp(c.name))}"><img src="${iconURL(c.name)}" alt="${esc(displayChamp(c.name))}" onerror="this.style.visibility='hidden'"><div class="champ-stat">${deNumber(c.winrate)}%</div><div class="champ-stat">${deNumber(c.games,0)} Games</div></div>`).join('')}</div>`}
+function updateHeader(id,index){const side=$(id),t=data?.teams?.[index]||{},logo=t.logo||'/default-team-logo.svg?v=125',label=t.name|| (index?'RED TEAM':'BLUE TEAM'),key=JSON.stringify([label,logo]);if(side.dataset.headerKey===key)return;side.dataset.headerKey=key;side.querySelector('.team-header').innerHTML=index?`<span class="team-label">${esc(label)}</span>${logo?`<img class="team-logo" src="${esc(logo)}" alt="">`:''}`:`${logo?`<img class="team-logo" src="${esc(logo)}" alt="">`:''}<span class="team-label">${esc(label)}</span>`}
+function updateArt(id,champ){
+  // Missing/unfinished player data is not an instruction to erase the last artwork.
+  // Retain it until a different, fully loaded champion image is ready to crossfade.
+  const name=String(champ||'').trim();
+  if(!name)return;
+  if(currentArt[id]===name)return;
+  const gen=++artGeneration[id];
+  const side=$(id),layers=[...side.querySelectorAll('.art')];
+  const url=artURL(name),preload=new Image();
+  preload.onload=()=>{
+    if(gen!==artGeneration[id])return;
+    const active=layers.findIndex(l=>l.classList.contains('visible'));
+    const next=active===0?1:0;
+    const target=layers[next];
+    // Ensure reused layers start truly hidden and render the URL before fading in.
+    target.classList.remove('visible');
+    target.style.backgroundImage=`url("${url}")`;
+    void target.offsetWidth;
+    target.classList.add('visible');
+    if(active>=0)layers[active].classList.remove('visible');
+    currentArt[id]=name;
+  };
+  preload.onerror=()=>{if(gen===artGeneration[id])console.warn('Champion artwork unavailable',name,url)};
+  preload.src=url;
+}
+let swapToken=0;
+function render(role,initial=false){if(!data)return;++statGeneration.left;++statGeneration.right;const token=++swapToken;shown=role;if(initial){setRoleIcon(roles[role]);}$('season').textContent='SOLOQ - S'+String(data.season_info?.year||new Date().getUTCFullYear()).slice(-2);
+for(const [id,idx] of [['left',0],['right',1]])updateHeader(id,idx);
+const apply=()=>{if(token!==swapToken)return;for(const [id,index] of [['left',role],['right',role+5]]){const node=$(id).querySelector('.stats');node.innerHTML=content(index);node.classList.remove('switch-out','switch-in');void node.offsetWidth;node.classList.add('switch-in');updateArt(id,data.results?.[index]?.top?.[0]?.name)}setTimeout(()=>{for(const id of ['left','right'])$(id).querySelector('.stats').classList.remove('switch-in')},1600)};
+if(initial){apply();return}animateRoleCylinder(roles[role]);for(const id of ['left','right']){$(id).querySelector('.stats').classList.remove('switch-in');$(id).querySelector('.stats').classList.add('switch-out')}setTimeout(()=>{if(token!==swapToken)return;apply()},660)}
+function demoData(){const f=(riot,champ)=>({riot_id:riot,tier:'MASTER',lp:856,winrate:51,games:502,complete:true,top:champ.map((name,i)=>({name,games:68-i*6,winrate:48.5+i*2.4}))});return {season_info:{year:2026},teams:[{name:'Concept X'},{name:'Overdue Singularity'}],results:{0:f('CX Fabi#TOP',['Akali','Gragas','Renekton','Camille','Chogath']),5:f('StevStev99#EUW',['LeeSin','Kaisa','Aatrox','Nunu','Ornn'])}}}
+const renderKey=r=>JSON.stringify(r?{riot_id:r.riot_id,tier:r.tier,rank:r.rank,lp:r.lp,winrate:r.winrate,games:r.games,top:r.top,error:r.error}:null);
+const statGeneration={left:0,right:0};
+function liveUpdateStats(side,index,previous){
+  const last=renderKey(previous?.results?.[index]),next=renderKey(data?.results?.[index]);
+  if(last===next)return;
+  const current=$(side).querySelector('.stats');const generation=++statGeneration[side];
+  current.classList.remove('switch-in');current.classList.add('switch-out');
+  setTimeout(()=>{
+    if(generation!==statGeneration[side])return;
+    current.innerHTML=content(index);current.classList.remove('switch-out');
+    void current.offsetWidth;current.classList.add('switch-in');
+    updateArt(side,data?.results?.[index]?.top?.[0]?.name);
+    setTimeout(()=>{if(generation===statGeneration[side])current.classList.remove('switch-in')},1400);
+  },420);
+}
+async function reload(){try{
+  const fresh=demo?demoData():await(await fetch('/api/results',{cache:'no-store'})).json();
+  const before=data;data=fresh;
+  if(shown<0){render(fixed>=0?fixed:0,true)}
+  else{
+    updateHeader('left',0);updateHeader('right',1);
+    liveUpdateStats('left',shown,before);
+    liveUpdateStats('right',shown+5,before);
+  }
+}catch{}}
+async function control(){if(fixed>=0||demo)return;try{const o=await(await fetch('/api/overlay-state',{cache:'no-store'})).json();if(o.revision!==lastRevision){lastRevision=o.revision;if(data&&o.role!==shown)render(o.role)}}catch{}}
+async function nextDemo(){if(!demo||fixed>=0)return;render((shown+1)%5)}
+(async()=>{await ddragon();await reload();await control();setInterval(reload,5000);setInterval(control,500);if(demo&&fixed<0)setInterval(nextDemo,12000)})();
+</script></body></html>

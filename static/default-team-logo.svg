@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="No team logo">
+  <!-- Opaque square, intentionally no letters, symbols of any team, or shadow. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#20252d"/><stop offset="1" stop-color="#10151c"/></linearGradient>
+    <linearGradient id="shield" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#4a515a"/><stop offset="0.52" stop-color="#353e49"/><stop offset="1" stop-color="#272f39"/></linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <path d="M100 23 C114 37 137 48 166 54 L163 112 C160 141 144 159 100 178 C56 159 40 141 37 112 L34 54 C63 48 86 37 100 23Z" fill="url(#shield)" stroke="#58616c" stroke-width="2"/>
+  <path d="M100 37 C114 49 132 57 152 62 L149 110 C146 132 133 148 100 163 C67 148 54 132 51 110 L48 62 C68 57 86 49 100 37Z" fill="none" stroke="#68727e" stroke-opacity=".34" stroke-width="1.5"/>
+</svg>

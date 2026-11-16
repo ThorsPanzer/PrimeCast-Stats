@@ -1,0 +1,406 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PrimeCast · Stats</title><style>
+:root{color-scheme:dark;--bg:#10151b;--panel:#1a222b;--border:#2a3643;--text:#e7edf3;--muted:#9dabba;--gold:#d9a441;--blue:#4d9cff;--red:#ef6873}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,Segoe UI,Arial}header{padding:25px 35px;background:#171e26;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}h1{margin:0;font-size:24px}h1 b{color:var(--gold)}.tag{font-size:12px;color:var(--muted)}main{max-width:1300px;margin:25px auto;padding:0 20px}.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:18px}h2{font-size:17px;margin:0 0 17px}.row{display:flex;gap:14px;flex-wrap:wrap;align-items:end}.field{display:flex;flex-direction:column;gap:5px;min-width:180px;flex:1}label{font-size:12px;color:var(--muted)}input,select{background:#101820;color:var(--text);border:1px solid #3a4755;border-radius:7px;padding:10px;width:100%;font:inherit}input:focus{outline:1px solid var(--gold)}button{cursor:pointer;border:none;background:var(--gold);color:#1b1b18;border-radius:7px;font:600 13px system-ui;padding:11px 17px}button.secondary{background:#35424f;color:#e6ebf0}button.danger{background:#65323a;color:white}button:disabled{opacity:.45;cursor:wait}.teams{display:grid;grid-template-columns:1fr 1fr;gap:18px}.team{background:#141c24;border:1px solid var(--border);border-radius:10px;padding:18px}.team.blue{border-top:3px solid var(--blue)}.team.red{border-top:3px solid var(--red)}.logo-row{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}.logo-row input{max-width:250px}.logo-name{font-size:12px;color:var(--muted)}.player{display:grid;grid-template-columns:20px 75px 1fr;gap:10px;align-items:center;margin-top:10px}.player span{color:var(--muted);font-weight:700;font-size:12px}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px}.status{padding:12px 14px;background:#121920;border-radius:8px;color:var(--muted);flex:1;min-width:240px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}.card{padding:15px;background:#131b23;border-radius:9px;border:1px solid var(--border)}.card h3{margin:0 0 4px;font-size:15px;overflow-wrap:anywhere}.label{font-size:11px;color:var(--muted);text-transform:uppercase}.rank{font-size:20px;font-weight:800;margin:9px 0}.rank small{font-size:12px;color:var(--muted);font-weight:500}.champ{display:flex;justify-content:space-between;border-top:1px solid #2a3643;padding:5px 0;gap:6px}.tip{color:var(--muted);font-size:12px;margin-top:10px}.empty{color:var(--muted)}.warn{color:#f9be72}@media(max-width:800px){.teams{grid-template-columns:1fr}header{padding:20px}}
+
+h1,h2,.teamname,.rank{font-family:system-ui,'Segoe UI',Arial,sans-serif;letter-spacing:normal;font-weight:650}h1{font-size:27px;letter-spacing:-.4px}h2{font-size:17px;letter-spacing:normal}.team{background:linear-gradient(120deg,#0b2230,#151923 55%,#25202b)}.team.red{background:linear-gradient(240deg,#32131e,#141924 58%,#102633)}.panel{border-radius:3px}.import-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}.import-row{display:flex;gap:8px}.import-row button{white-space:nowrap}.import-preview{border:1px solid #475c6f;padding:16px;margin:15px 0 20px;background:#111d28}.import-preview h3{font-family:system-ui;font-size:21px;letter-spacing:1px;margin:0 0 9px}.import-line{display:grid;grid-template-columns:28px minmax(160px,1fr) 150px;gap:10px;align-items:center;padding:5px 0}.import-line select{width:100%}.import-preview .actions{margin-top:10px}.grab{cursor:grab;color:#9cacc1;user-select:none;font-size:20px;text-align:center}.player.dragging,.import-line.dragging{opacity:.35}.player.dragover,.import-line.dragover{outline:2px solid #d9a441;outline-offset:2px}.import-line{cursor:grab}.season-warning{border-left:4px solid #ed7070;padding:12px;margin-top:12px;background:#4d252b;color:#ffe4e4}@media(max-width:900px){.import-grid{grid-template-columns:1fr}}@media(max-width:520px){.import-line{grid-template-columns:22px 1fr}.import-line select{grid-column:2}} 
+.interval-control{display:flex;align-items:center;gap:12px}.interval-control input[type=range]{padding:0;accent-color:var(--gold);cursor:pointer;min-width:100px}.interval-control input[type=number]{width:76px;text-align:center;font-weight:700;flex:none}.overlay-nav{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}.overlay-nav #shownrole{min-width:80px;text-align:center;font:600 18px system-ui}.overlay-nav .tip{margin:0}.logo-preview{width:72px;height:72px;object-fit:contain;background:#0a1018;border:1px solid #465564;border-radius:0;padding:4px}.logo-preview[hidden]{display:none}.logo-row .danger{padding:7px 12px;font-size:12px}.champ{align-items:center}.team-stage{position:relative}.team-stage #swapteams{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;width:43px;height:43px;border-radius:50%;padding:0;font-size:27px;line-height:1;box-shadow:0 4px 15px #0009;border:1px solid #566775}.team-stage #swapteams:hover{background:#526a79}.team-stage #swapteams:focus-visible{outline:2px solid var(--gold);outline-offset:2px}@media(max-width:800px){.team-stage #swapteams{top:50%}}
+.tabs{display:flex;gap:9px;margin-bottom:19px}.tabs button{font-size:16px;background:#242e39;color:#cbd4db;min-width:145px}.tabs button.active{background:#d9a441;color:#171819}.tab-page[hidden]{display:none!important}.pg-progress{color:#cbd5df;font-size:13px;padding:10px 0}.pg-preview{width:100%;height:380px;border:1px solid #344254;border-radius:8px;background:#090e16}.pg-row{display:flex;gap:12px;align-items:end;flex-wrap:wrap}.pg-row .field{max-width:420px}.pg-note{font-size:12px;color:var(--muted);margin-top:12px}
+.pg-title-row{display:flex;align-items:center;justify-content:center;position:relative;gap:12px;margin-bottom:16px}.pg-title-row h2{margin:0 auto}.pg-title-row .pg-swap{position:absolute;left:50%;transform:translateX(-50%)}.pg-swap{display:grid;place-items:center;width:43px;height:43px;border-radius:50%;padding:0;font-size:27px;line-height:1;border:1px solid #566775}.overlay-nav #pauseoverlay[aria-pressed="true"]{background:#85632b;color:#fff}.team-stage #swapteams{top:50%;transform:translate(-50%,-50%)}
+
+/* Keep setup text legible; Impact is reserved for broadcast output. */
+input.teamname{font-family:system-ui,'Segoe UI',Arial,sans-serif!important;font-weight:500!important;letter-spacing:normal!important;font-size:14px!important}
+.panel .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:34px}
+.panel .section-head h2{margin:0;flex:1}
+.section-toggle{background:transparent!important;color:#a9b9c7!important;font-size:21px!important;line-height:1;padding:2px 9px!important;min-width:30px;border:1px solid #394958!important}
+.section-toggle:hover{background:#30404f!important}
+.panel.is-collapsed > :not(:first-child){display:none!important}
+.panel.is-collapsed .section-toggle{transform:rotate(-90deg)}
+.section-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#e4b85b;margin-left:10px;vertical-align:middle;box-shadow:0 0 0 3px #e4b85b20}
+.section-dot.is-ok{background:#46ca87;box-shadow:0 0 0 3px #46ca8720}
+
+/* v1.17: consistent, minimal SVG controls */
+.swap-glyph{width:22px;height:22px;display:block;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none}
+#swapteams,.pg-swap{display:grid;place-items:center;line-height:1}
+.section-toggle{display:flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px;padding:0!important;margin:0;vertical-align:middle}
+.section-toggle svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease}
+.panel.is-collapsed .section-toggle{transform:none}
+.panel.is-collapsed .section-toggle svg{transform:rotate(-90deg)}
+.prime-import{padding:13px 16px;margin-bottom:15px;border:1px solid #354557;border-radius:8px;background:#141d26;display:grid;gap:10px}
+.prime-import .import-row{align-items:end}
+#prime-preview{border:1px solid #364758;border-radius:8px;background:#101a25;padding:15px}
+.prime-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.prime-result-card{background:#182330;border-radius:8px;border:1px solid #38506a;padding:13px;min-width:0}
+.prime-result-card img{width:58px;height:58px;object-fit:contain;margin-right:10px;vertical-align:middle;border-radius:6px}
+.prime-result-card h3{font-size:17px;display:inline;margin:0}
+.prime-result-card small{font:12px/1.4 system-ui;color:#abc0d5}
+.prime-player-row{display:grid;grid-template-columns:minmax(0,1fr) 138px;gap:8px;align-items:center;margin:6px 0}
+.prime-player-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:13px system-ui}
+.prime-player-row select{max-width:138px}
+.prime-preview-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.team-name-fields{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:7px}
+@media(max-width:850px){.prime-result-grid{grid-template-columns:1fr}}
+
+/* All setup typography uses the system UI font. Impact is broadcast-only. */
+#page-pre,#page-post,header,button,input,select,h1,h2,h3,.teamname,.rank{font-family:system-ui,'Segoe UI',Arial,sans-serif!important}
+.role-controls{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:15px}
+.role-icons{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.role-icons button{padding:4px;width:55px;height:52px;display:grid;place-items:center;background:#222c37;border:1px solid #3d5266;border-radius:6px;transition:background .18s,border-color .18s}
+.role-icons button img{width:38px;height:38px;object-fit:contain}
+.role-icons button.active{border-color:#d9a441;background:#4b3b25;box-shadow:inset 0 0 0 1px #d9a44160}
+.role-icons button:hover{background:#39495b}
+.compact-toggle{display:flex;align-items:center;gap:8px;color:#d7e2ed;white-space:nowrap}
+.compact-toggle input{width:17px;height:17px;accent-color:#d9a441}
+.compact-field{display:flex;align-items:center;gap:9px}
+.compact-field input{width:72px}
+.pg-title-row{justify-content:flex-start}
+.pg-title-row h2{margin:0}
+.pg-title-row .pg-swap{position:static;transform:none;margin-left:auto;margin-right:auto}
+.section-toggle svg{display:block;margin:auto}
+
+/* v1.35: dedicated Settings workspace */
+#page-settings h3{font:600 14px/1.4 system-ui,Segoe UI,sans-serif;color:#dae3ed}
+.settings-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.color-control{display:flex;align-items:center;gap:12px;background:#111922;border:1px solid #344454;border-radius:7px;padding:7px 10px}
+.color-control input[type=color]{width:56px;height:36px;border:0;outline:0;background:none;padding:0;flex:none;cursor:pointer}
+.color-control output{font:600 13px system-ui;color:#c9d9ea;letter-spacing:.5px}
+.settings-heading{margin:22px 0 11px}
+.toggle-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border:1px solid #344352;background:#111c26;border-radius:8px;color:#e2e9f0;font:500 13px system-ui}
+.switch-row input{appearance:none;width:38px;height:22px;min-width:38px;border:1px solid #63717e;border-radius:16px;background:#394550;padding:0;position:relative;cursor:pointer;transition:background .17s}
+.switch-row input:before{content:'';position:absolute;width:16px;height:16px;top:2px;left:2px;border-radius:50%;background:white;transition:transform .17s}
+.switch-row input:checked{background:#397ca6;border-color:#397ca6}
+.switch-row input:checked:before{transform:translateX(16px)}
+#page-post .pg-title-row{justify-content:space-between}
+#page-post .pg-title-row h2{margin:0}
+#page-post .pg-title-row .pg-swap{left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;border:1px solid #688295;background:#354b5e}
+@media(max-width:850px){.settings-grid,.toggle-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.settings-grid,.toggle-grid{grid-template-columns:1fr}}
+
+/* v1.38: true centered postgame swap, independent of collapsible headers */
+#page-post .pg-swap-center{display:flex;align-items:center;justify-content:center;margin:4px 0 20px;gap:15px}
+#page-post .pg-swap-center::before,#page-post .pg-swap-center::after{content:"";height:1px;width:clamp(50px,12vw,160px);background:#344454}
+#page-post .pg-swap-center .pg-swap{position:static;left:auto;top:auto;transform:none;margin:0;flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#334c60;border:1px solid #70889c;box-shadow:0 4px 14px #0006}
+#page-post .pg-swap-center .pg-swap:hover{background:#496983}
+/* v1.38: custom HTML-only HSV picker, never triggers the OS color dialog */
+.color-control{position:relative;gap:8px;overflow:visible;padding:7px}
+.color-open{display:flex;align-items:center;gap:10px;justify-content:space-between;min-width:0;flex:1;background:transparent;color:#d9e5f1;border:0;padding:4px 8px;font:600 13px/1.4 system-ui;letter-spacing:.4px}
+.color-open:hover{background:#273544}
+.color-open .color-swatch{width:33px;height:33px;flex:none;display:block;border-radius:5px;border:1px solid #ffffff5c;box-shadow:inset 0 0 0 1px #0006}
+.color-reset{flex:none;color:#c2d3df;background:#293948;padding:8px 12px;font:600 12px system-ui;border:1px solid #40566b;border-radius:5px}
+.color-reset:hover{background:#40566b}
+.color-popover[hidden]{display:none!important}
+.color-popover{position:absolute;z-index:90;top:calc(100% + 8px);left:0;width:min(310px,calc(100vw - 48px));padding:14px;border-radius:11px;border:1px solid #61758a;background:#1b2836;box-shadow:0 16px 40px #000b}
+.color-palette{position:relative;overflow:hidden;width:100%;height:160px;cursor:crosshair;border:1px solid #ffffff25;border-radius:5px;background-color:red;background-image:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,transparent);touch-action:none}
+.color-cursor{position:absolute;display:block;pointer-events:none;width:15px;height:15px;border-radius:50%;border:2px solid white;box-shadow:0 0 0 1px #0009,0 1px 5px #000b;transform:translate(-50%,-50%)}
+.color-hue{display:block!important;appearance:none!important;width:100%;height:17px!important;margin:15px 0 13px;padding:0!important;border:0!important;border-radius:12px!important;cursor:pointer;background:linear-gradient(to right,red,#ff0,lime,cyan,blue,magenta,red)!important}
+.color-hue::-webkit-slider-thumb{appearance:none;width:12px;height:24px;border:2px solid white;border-radius:4px;background:#23313d;box-shadow:0 0 0 1px #0008}
+.color-hue::-moz-range-thumb{width:10px;height:22px;border:2px solid white;border-radius:4px;background:#23313d}
+.color-hex-row{display:flex;align-items:center;gap:9px}
+.color-hex-row label{flex:none;font-weight:700}
+.color-hex-row input{min-width:0;max-width:120px;padding:8px;font:600 13px monospace;letter-spacing:.5px}
+.color-done{margin-left:auto;padding:9px 12px}
+</style></head><body><header><div><h1>PRIME<b>CAST</b> <span style="font-weight:400">STATS</span></h1><div class="tag">Local OBS statistics tool · Riot Solo/Duo</div></div><div class="tag">v1.38 · localhost</div></header><main><nav class="tabs" aria-label="Section"><button type="button" id="tab-pre" class="active" onclick="switchTab('pre')">PRE-GAME</button><button type="button" id="tab-post" onclick="switchTab('post')">POST-GAME</button><button type="button" id="tab-settings" onclick="switchTab('settings')">SETTINGS</button></nav><div class="tab-page" id="page-pre"><section class="panel"><h2>02 · Match setup</h2>
+<div class="import-grid">
+  <div class="field"><label>OP.GG Multi-Search-Link · BLUE TEAM</label><div class="import-row"><input id="importblue" placeholder="https://op.gg/lol/multisearch/euw?summoners=…"><button class="secondary" onclick="importLink(0)">Import</button></div></div>
+  <div class="field"><label>OP.GG Multi-Search-Link · RED TEAM</label><div class="import-row"><input id="importred" placeholder="https://op.gg/lol/multisearch/euw?summoners=…"><button class="secondary" onclick="importLink(1)">Import</button></div></div>
+</div>
+<div class="import-preview" id="importpreview" hidden></div>
+<div class="team-stage"><div class="teams" id="teams"></div><button type="button" id="swapteams" class="secondary" aria-label="Swap team sides" title="Swap team sides (Blue ↔ Red)"><svg class="swap-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h15m0 0-4-4m4 4-4 4M20 16H5m0 0 4-4m-4 4 4 4"/></svg></button></div><div id="seasonwarn" class="season-warning" hidden></div><div class="actions"><button id="save" class="secondary">Save settings</button><button id="start">Load / update stats</button><button id="stop" class="danger" hidden>Stop loading</button><div class="status" id="status">Ready.</div></div></section><section class="panel"><h2>03 · OBS Browser Source</h2><div class="row"><div class="field"><label>OBS Browser Source · 1920 × 1080</label><input readonly onclick="this.select()" value="http://127.0.0.1:8767/pregame"></div><button type="button" class="secondary" onclick="window.open('/pregame','_blank')">Open preview ↗</button><div class="field" style="min-width:250px;max-width:380px"><label>Role rotation · 1–60 seconds</label><div class="interval-control"><input id="roleinterval" type="range" min="1" max="60" value="12"><input id="roleintervalnum" type="number" min="1" max="60" value="12" aria-label="Exact interval in seconds"></div></div></div><div class="overlay-nav"><div class="role-icons" id="pregame-role-icons" aria-label="Pregame role"><button data-role="0" title="Top"><img src="/assets/role/top.png" onerror="this.onerror=null;this.src='/fallback-role/top.svg'" alt="Top"></button><button data-role="1" title="Jungle"><img src="/assets/role/jungle.png" onerror="this.onerror=null;this.src='/fallback-role/jungle.svg'" alt="Jungle"></button><button data-role="2" title="Mid"><img src="/assets/role/mid.png" onerror="this.onerror=null;this.src='/fallback-role/mid.svg'" alt="Mid"></button><button data-role="3" title="ADC"><img src="/assets/role/adc.png" onerror="this.onerror=null;this.src='/fallback-role/adc.svg'" alt="ADC"></button><button data-role="4" title="Support"><img src="/assets/role/support.png" onerror="this.onerror=null;this.src='/fallback-role/support.svg'" alt="Support"></button></div><strong id="shownrole" hidden>TOP</strong><button hidden class="secondary" id="prevrole">◀ Previous role</button><button hidden class="secondary" id="nextrole">Next role ▶</button><button class="secondary" id="pauseoverlay" type="button" aria-pressed="false">⏸ Pause</button><span class="tip" id="autoroleinfo">Automatic role rotation active.</span></div></section>
+
+</div><div class="tab-page" id="page-post" hidden>
+<section class="panel"><div class="pg-title-row"><h2>POST-GAME · Load match</h2></div><div class="pg-swap-center"><button type="button" class="secondary pg-swap" id="swapteams-post" title="Swap team sides (Blue ↔ Red)" aria-label="Swap team sides"><svg class="swap-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h15m0 0-4-4m4 4-4 4M20 16H5m0 0 4-4m-4 4 4 4"/></svg></button></div>
+<div class="pg-row"><div class="field"><label>Game ID / Match ID</label><input id="pg-game-id" placeholder="8041235471 or EUW1_8041235471" inputmode="text"></div><button id="pg-load" type="button">Load postgame</button></div>
+<div id="pg-status" class="pg-progress">No match loaded.</div>
+<div class="pg-note">Uses the saved Riot key. Match and timeline data are fetched once and stored locally.</div></section>
+<section class="panel"><h2>OBS · Postgame overlay</h2><div class="row"><div class="field"><label>Browser Source · 1920 × 1080</label><input readonly onclick="this.select()" value="http://127.0.0.1:8767/postgame"></div><button type="button" class="secondary" onclick="window.open('/postgame','_blank')">Open preview ↗</button></div>
+<div class="pg-note">Uses team names and logos from pregame. Preview uses a black background; the OBS source is transparent.</div>
+</section>
+<section class="panel"><h2>OBS · Head to Head</h2><div class="row"><div class="field"><label>Browser Source · 1920 × 1080</label><input readonly onclick="this.select()" value="http://127.0.0.1:8767/head2head"></div><button type="button" class="secondary" onclick="window.open('/head2head','_blank')">Open preview ↗</button></div>
+<div class="role-controls"><div class="role-icons" id="h2h-role-icons" aria-label="Head-to-head role"><button data-role="0" title="Top"><img src="/assets/role/top.png" onerror="this.onerror=null;this.src='/fallback-role/top.svg'" alt="Top"></button><button data-role="1" title="Jungle"><img src="/assets/role/jungle.png" onerror="this.onerror=null;this.src='/fallback-role/jungle.svg'" alt="Jungle"></button><button data-role="2" title="Mid"><img src="/assets/role/mid.png" onerror="this.onerror=null;this.src='/fallback-role/mid.svg'" alt="Mid"></button><button data-role="3" title="ADC"><img src="/assets/role/adc.png" onerror="this.onerror=null;this.src='/fallback-role/adc.svg'" alt="ADC"></button><button data-role="4" title="Support"><img src="/assets/role/support.png" onerror="this.onerror=null;this.src='/fallback-role/support.svg'" alt="Support"></button></div><label class="compact-toggle"><input type="checkbox" id="h2h-auto"> Auto-play</label><label class="compact-field">Seconds <input type="number" min="5" max="60" id="h2h-seconds" value="18"></label></div>
+</section>
+</div><div class="tab-page" id="page-settings" hidden><section class="panel" id="panel-api"><h2>01 · Riot API <span id="api-dot" class="section-dot" title="API configuration incomplete"></span></h2><div class="row"><div class="field" style="flex:2"><label>Personal API Key (stored locally)</label><input id="key" type="password" autocomplete="off" placeholder="RGAPI-…"></div><div class="field"><label>Server</label><select id="platform"><option value="euw1">EUW</option><option value="eun1">EUNE</option><option value="na1">NA</option><option value="kr">KR</option><option value="br1">BR</option><option value="tr1">TR</option><option value="la1">LAN</option><option value="la2">LAS</option><option value="oc1">OCE</option><option value="jp1">JP</option><option value="ru">RU</option></select></div><div class="field"><label>Ranked year</label><select id="season"></select></div></div><div class="actions"><button type="button" id="save-riot-settings" class="secondary">Save Riot API</button><span class="tip">Changes are saved locally.</span></div></section><section class="panel" id="panel-appearance"><h2>02 · Broadcast appearance</h2>
+<div class="settings-grid"><div class="field"><label>Blue side</label><div class="color-control" data-color="blue"><input type="hidden" id="pref-blue" value="#4DBBEB"><button type="button" class="color-open" id="open-color-blue" aria-label="Choose Blue side color" aria-expanded="false"><span class="color-swatch" id="swatch-blue"></span><span id="pref-blue-hex">#4DBBEB</span><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><button type="button" class="color-reset" id="reset-color-blue" title="Restore default Blue color">Default</button><div class="color-popover" id="picker-blue" hidden><div class="color-palette" id="palette-blue" role="slider" tabindex="0" aria-label="Blue saturation and brightness" aria-valuemin="0" aria-valuemax="100"><span class="color-cursor" id="cursor-blue"></span></div><input class="color-hue" id="hue-blue" type="range" min="0" max="360" step="1" aria-label="Blue hue"><div class="color-hex-row"><label for="hex-blue">HEX</label><input id="hex-blue" type="text" maxlength="7" spellcheck="false" autocomplete="off" aria-label="Blue hex color"><button type="button" class="secondary color-done" data-done="blue">Done</button></div></div></div></div>
+<div class="field"><label>Red side</label><div class="color-control" data-color="red"><input type="hidden" id="pref-red" value="#F56C91"><button type="button" class="color-open" id="open-color-red" aria-label="Choose Red side color" aria-expanded="false"><span class="color-swatch" id="swatch-red"></span><span id="pref-red-hex">#F56C91</span><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><button type="button" class="color-reset" id="reset-color-red" title="Restore default Red color">Default</button><div class="color-popover" id="picker-red" hidden><div class="color-palette" id="palette-red" role="slider" tabindex="0" aria-label="Red saturation and brightness" aria-valuemin="0" aria-valuemax="100"><span class="color-cursor" id="cursor-red"></span></div><input class="color-hue" id="hue-red" type="range" min="0" max="360" step="1" aria-label="Red hue"><div class="color-hex-row"><label for="hex-red">HEX</label><input id="hex-red" type="text" maxlength="7" spellcheck="false" autocomplete="off" aria-label="Red hex color"><button type="button" class="secondary color-done" data-done="red">Done</button></div></div></div></div>
+<div class="field"><label>Broadcast font</label><select id="pref-font"><option>Impact</option><option>Anton</option><option>Oswald</option><option>Rajdhani</option><option>Archivo Black</option></select></div><div class="field"><label>Number format</label><select id="pref-number-locale"><option value="de-DE">European · 20.934 / 55,4%</option><option value="en-US">US · 20,934 / 55.4%</option></select></div></div>
+<h3 class="settings-heading">Postgame overlays</h3>
+<div class="toggle-grid"><label class="switch-row"><span>First Blood</span><input type="checkbox" id="pref-first-blood" checked></label><label class="switch-row"><span>Dragons</span><input type="checkbox" id="pref-dragons" checked></label><label class="switch-row"><span>Baron</span><input type="checkbox" id="pref-baron" checked></label><label class="switch-row"><span>Gold swings</span><input type="checkbox" id="pref-swings" checked></label><label class="switch-row"><span>Damage composition</span><input type="checkbox" id="pref-damage" checked></label></div>
+<div class="actions"><button id="save-preferences" type="button">Save appearance</button><span class="tip" id="prefs-status" aria-live="polite"></span></div></section><section class="panel" id="panel-cache"><h2>03 · Local cache</h2><div class="actions" style="margin-top:0"><div class="status" id="cache-summary">Checking storage…</div><button class="secondary" type="button" id="cache-refresh">Refresh</button><button class="danger" type="button" id="cache-purge">Delete older years</button></div><div class="tip">Deletes only SoloQ cache entries before the selected ranked year. Current year and Postgame data are preserved.</div></section></div></main><footer class="legal-footer" style="max-width:1300px;margin:10px auto 24px;padding:0 20px;color:#8695a4;font:12px/1.5 system-ui,Segoe UI,Arial,sans-serif">PrimeCast Stats is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc. · <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener noreferrer" style="color:#a8c4dc">GPL-3.0</a></footer><script>
+
+// All sections can be collapsed. The API section starts collapsed when a key is already saved.
+function setupCollapsiblePanels(hasSavedKey){
+  document.querySelectorAll('.tab-page section.panel').forEach((panel,index)=>{
+    if(panel.dataset.collapsibleReady)return;
+    panel.dataset.collapsibleReady='1';
+    const first=panel.firstElementChild;
+    const title=first.matches('h2')?first:first.querySelector('h2');
+    if(!title)return;
+    const header=first.matches('h2')?document.createElement('div'):first;
+    if(first.matches('h2')){
+      header.className='section-head';
+      panel.insertBefore(header,first);header.appendChild(first);
+    }else header.classList.add('section-head');
+    const btn=document.createElement('button');btn.className='section-toggle';btn.type='button';
+    btn.innerHTML='<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7 5 5 5-5"/></svg>'; btn.setAttribute('aria-label','Expand / collapse section');
+    btn.setAttribute('aria-expanded','true');
+    header.appendChild(btn);
+    const storage='primecast-collapse-'+(panel.id||panel.querySelector('h2')?.textContent.trim()||index);
+    const saved=localStorage.getItem(storage);
+    const collapsed=saved===null?(panel.id==='panel-cache'||(panel.id==='panel-api'&&hasSavedKey)):saved==='true';
+    panel.classList.toggle('is-collapsed',collapsed);
+    btn.setAttribute('aria-expanded',String(!collapsed));
+    btn.onclick=()=>{
+      let next=!panel.classList.contains('is-collapsed');
+      panel.classList.toggle('is-collapsed',next);
+      btn.setAttribute('aria-expanded',String(!next));
+      localStorage.setItem(storage,String(next));
+    };
+  });
+}
+function updateApiIndicator(ok){
+  let dot=document.getElementById('api-dot');if(!dot)return;
+  dot.classList.toggle('is-ok',Boolean(ok));
+  dot.title=ok?'Riot API key saved (connection checked when loading)':'No Riot API key saved';
+}
+
+function switchTab(tab){for(const name of ['pre','post','settings']){document.getElementById('page-'+name).hidden=tab!==name;document.getElementById('tab-'+name).classList.toggle('active',tab===name)}history.replaceState(null,'',tab==='post'?'#postgame':tab==='settings'?'#settings':'#pregame')}
+if(location.hash==='#postgame')switchTab('post');
+else if(location.hash==='#settings')switchTab('settings');
+let lastPgId=null;
+let currentH2HRole=0;
+function selectRoleButton(rootId,role){const root=document.getElementById(rootId);if(root)root.querySelectorAll('button[data-role]').forEach(b=>{const on=+b.dataset.role===+role;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});if(rootId==='h2h-role-icons')currentH2HRole=+role}
+function selectPreRole(role){selectRoleButton('pregame-role-icons',role)}
+async function setHeadToHead(opts){const payload={role:currentH2HRole,auto:document.getElementById('h2h-auto').checked,seconds:+document.getElementById('h2h-seconds').value,...opts};await fetch('/api/h2h-control',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});selectRoleButton('h2h-role-icons',payload.role)}
+async function updateH2H(){const info=await(await fetch('/api/h2h-control',{cache:'no-store'})).json();selectRoleButton('h2h-role-icons',info.role);document.getElementById('h2h-auto').checked=info.auto;document.getElementById('h2h-seconds').value=info.seconds;}
+document.querySelectorAll('#h2h-role-icons button').forEach(b=>b.onclick=()=>setHeadToHead({role:+b.dataset.role}));
+document.getElementById('h2h-auto').onchange=()=>setHeadToHead({});
+document.getElementById('h2h-seconds').onchange=()=>setHeadToHead({});
+document.querySelectorAll('#pregame-role-icons button').forEach(b=>b.onclick=()=>overlayControl({role:+b.dataset.role}));
+updateH2H();setInterval(async()=>{try{const c=await(await fetch('/api/h2h-control',{cache:'no-store'})).json();selectRoleButton('h2h-role-icons',c.role)}catch{}},1500);
+async function pgPoll(){try{const r=await fetch('/api/postgame/status',{cache:'no-store'});const status=await r.json();const d=await (await fetch('/api/postgame',{cache:'no-store'})).json();document.getElementById('pg-load').disabled=status.running;let msg=status.running?status.progress:(status.error?'Error: '+status.error:d.match?`Loaded: ${d.match.match_id} · ${Math.floor(d.match.duration/60)}:${String(d.match.duration%60).padStart(2,'0')} min`:'No match loaded.');document.getElementById('pg-status').textContent=msg;if(d.match?.match_id && d.match.match_id!==lastPgId){lastPgId=d.match.match_id;document.getElementById('pg-game-id').value=d.match.match_id}}catch(e){document.getElementById('pg-status').textContent='Server unreachable: '+e.message}}
+document.getElementById('pg-load').onclick=async()=>{let id=document.getElementById('pg-game-id').value.trim();if(!id)return alert('Enter a Game ID.');try{const r=await fetch('/api/postgame/load',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({game_id:id})});const data=await r.json();if(!r.ok)throw Error(data.error||'Request failed');await pgPoll()}catch(e){alert(e.message)}};
+pgPoll();setInterval(pgPoll,3000);
+</script><script>
+const championNames={Chogath:"Cho'Gath",LeeSin:'Lee Sin',KogMaw:"Kog'Maw",Khazix:"Kha'Zix",RekSai:"Rek'Sai",Velkoz:"Vel'Koz",Kaisa:"Kai'Sa",Belveth:"Bel'Veth",Nunu:'Nunu & Willump',MissFortune:'Miss Fortune',TwistedFate:'Twisted Fate',MasterYi:'Master Yi',JarvanIV:'Jarvan IV',XinZhao:'Xin Zhao',AurelionSol:'Aurelion Sol',TahmKench:'Tahm Kench',DrMundo:'Dr. Mundo',Renata:'Renata Glasc',MonkeyKing:'Wukong'};const championName=n=>championNames[n]||n;
+async function refreshCacheSummary(){
+  const result=await (await fetch('/api/cache/summary',{cache:'no-store'})).json();
+  document.getElementById('cache-summary').textContent=`${result.size_mb} MB · `+
+    (result.years.length ? result.years.map(x=>`${x.year}: ${x.matches} matches`).join(' · ') : 'No saved matches');
+  document.getElementById('cache-purge').disabled=!result.years.some(y=>y.year<result.selected_year);
+  return result;
+}
+document.getElementById('cache-refresh').onclick=()=>refreshCacheSummary().catch(e=>alert(e.message));
+document.getElementById('cache-purge').onclick=async()=>{
+  const x=await refreshCacheSummary();
+  if(!confirm(`Delete cached SoloQ matches from years BEFORE ${x.selected_year}?\nCurrent season and all Postgame data remain untouched. This cannot be undone.`))return;
+  try{await api('/api/cache/purge-old',{});await refreshCacheSummary()}catch(e){alert(e.message)}
+};
+const roles=['TOP','JUNGLE','MID','ADC','SUPPORT'];const $=id=>document.getElementById(id);function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}async function api(url,data){let opts=data===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)};let r=await fetch(url,opts);let v=await r.json();if(!r.ok)throw Error(v.error||'Error');return v}
+function buildTeams(c){$('importblue').value=c.teams[0]?.opgg_url||'';$('importred').value=c.teams[1]?.opgg_url||'';window.currentTeamLogos=c.teams.map(t=>t.logo||'');$('teams').innerHTML=c.teams.map((t,ti)=>`<div class="team ${ti?'red':'blue'}"><div class="field"><label>TEAM ${ti?'RED':'BLUE'}</label><div class="team-name-fields"><input class="teamname" data-team="${ti}" value="${esc(t.name)}" title="Full team name"><input class="team-short" data-team="${ti}" maxlength="15" value="${esc(t.short_name||'')}" title="Team abbreviation" placeholder="Short"></div></div><div class="logo-row"><label>Team logo</label><input class="logo-file" type="file" accept="image/png,image/jpeg,image/webp" data-team="${ti}"><img class="logo-preview" data-logo-preview="${ti}" src="${t.logo?esc(t.logo)+'?t='+Date.now():'/default-team-logo.svg?v=125'}" alt="Team logo"><button type="button" class="danger remove-logo" data-team="${ti}" ${t.logo?'':'hidden'}>Remove</button></div>${roles.map((role,ri)=>`<div class="player" draggable="true" data-drag-team="${ti}" data-drag-role="${ri}"><span class="grab" title="Drag to reorder">⠿</span><span>${role}</span><input class="riotid" data-team="${ti}" data-role="${ri}" placeholder="Name#TAG" value="${esc(t.players[ri]||'')}"></div>`).join('')}</div>`).join('');wireDragTeams();wireLogos()}
+function wireLogos(){document.querySelectorAll('.logo-file').forEach(input=>{input.addEventListener('change',async()=>{const file=input.files?.[0];if(!file)return;try{if(file.size>750000)throw Error('The logo must be 750 KB or smaller.');const image=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(Error('Could not read file'));reader.readAsDataURL(file)});const result=await api('/api/team-logo',{team:+input.dataset.team,image});input.dataset.logo=result.logo;const t=input.dataset.team;const preview=document.querySelector(`.logo-preview[data-logo-preview="${t}"]`);preview.src=result.logo+'?t='+Date.now();preview.hidden=false;document.querySelector(`.remove-logo[data-team="${t}"]`).hidden=false;window.currentTeamLogos[+t]=result.logo;$('status').textContent='Logo uploaded. Save settings to keep your changes.'}catch(e){alert(e.message)}})});document.querySelectorAll('.remove-logo').forEach(btn=>btn.addEventListener('click',async()=>{if(!confirm('Remove team logo?'))return;const t=+btn.dataset.team;try{await api('/api/team-logo-remove',{team:t});window.currentTeamLogos[t]='';document.querySelector(`.logo-file[data-team="${t}"]`).dataset.logo='';const preview=document.querySelector(`.logo-preview[data-logo-preview="${t}"]`);preview.hidden=false;preview.src='/default-team-logo.svg?v=125';btn.hidden=true;$('status').textContent='Team logo removed.'}catch(e){alert(e.message)}}))}
+let pendingImport=null;
+function parseOpgg(text){
+  let u;try{u=new URL(text.trim())}catch{throw Error('Enter a complete OP.GG link.')}
+  // German /de/lol/multisearch/euw, English /lol/multisearch/euw,
+  // legacy /multisearch/euw and country-prefixed OP.GG hosts all supported.
+  const host=u.hostname.toLowerCase(), path=u.pathname.replace(/\/+$/,'');
+  const opgg=host==='op.gg'||host.endsWith('.op.gg');
+  const validPath=/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?(?:lol\/)?multisearch(?:\/[^/]+)?$/i.test(path);
+  if(!opgg||!validPath)throw Error('This is not an OP.GG multi-search link.');
+  const raw=u.searchParams.get('summoners');if(!raw)throw Error('The link has no summoners parameter.');
+  const players=raw.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!players.length || players.length>10)throw Error('The link must contain 1–10 players.');
+  for(const name of players)if(!name.includes('#')||!name.split('#')[0].trim()||!name.split('#')[1].trim())throw Error('Invalid Riot ID: '+name);
+  return players;
+}
+function wireDragTeams(){document.querySelectorAll('.player[draggable]').forEach(row=>{row.addEventListener('dragstart',e=>{window.dragPlayer=[+row.dataset.dragTeam,+row.dataset.dragRole];row.classList.add('dragging');e.dataTransfer.effectAllowed='move'});row.addEventListener('dragend',()=>row.classList.remove('dragging'));row.addEventListener('dragover',e=>{if(window.dragPlayer?.[0]===+row.dataset.dragTeam){e.preventDefault();row.classList.add('dragover')}});row.addEventListener('dragleave',()=>row.classList.remove('dragover'));row.addEventListener('drop',e=>{e.preventDefault();row.classList.remove('dragover');if(!window.dragPlayer)return;const [ti,ri]=window.dragPlayer,tj=+row.dataset.dragTeam,rj=+row.dataset.dragRole;if(ti!==tj)return;let a=document.querySelector(`.riotid[data-team="${ti}"][data-role="${ri}"]`),b=document.querySelector(`.riotid[data-team="${tj}"][data-role="${rj}"]`);[a.value,b.value]=[b.value,a.value];window.dragPlayer=null})})}
+function updateRoleOptions(){let assigned=[...document.querySelectorAll('.role-assign')].map(s=>s.value);document.querySelectorAll('.role-assign').forEach(s=>{for(const opt of s.options){if(opt.value)opt.disabled=assigned.includes(opt.value)&&s.value!==opt.value}})}
+function wireImportDrag(){let dragging=null;document.querySelectorAll('.import-line[draggable]').forEach(row=>{row.addEventListener('dragstart',e=>{dragging=row;row.classList.add('dragging');e.dataTransfer.effectAllowed='move'});row.addEventListener('dragend',()=>row.classList.remove('dragging'));row.addEventListener('dragover',e=>{e.preventDefault();row.classList.add('dragover')});row.addEventListener('dragleave',()=>row.classList.remove('dragover'));row.addEventListener('drop',e=>{e.preventDefault();row.classList.remove('dragover');if(!dragging||dragging===row)return;const a=dragging.querySelector('select'),b=row.querySelector('select');[a.value,b.value]=[b.value,a.value];const na=+dragging.dataset.idx,nb=+row.dataset.idx;[dragging.dataset.idx,row.dataset.idx]=[nb,na];const an=dragging.querySelector('strong'),bn=row.querySelector('strong');[an.textContent,bn.textContent]=[bn.textContent,an.textContent];updateRoleOptions()})});document.querySelectorAll('.role-assign').forEach(s=>s.addEventListener('change',updateRoleOptions));updateRoleOptions()}
+function importLink(team){try{
+  const source=$(team?'importred':'importblue').value;const players=parseOpgg(source);pendingImport={team,players};
+  const preview=$('importpreview');preview.hidden=false;
+  preview.innerHTML=`<h3>${team?'RED':'BLUE'} TEAM · IMPORT PREVIEW</h3><div class="tip">Roles are not inferred from the OP.GG link order. Assign roles or select “Unassigned”.</div>${players.map((name,i)=>`<div class="import-line" draggable="true" data-idx="${i}"><span>⠿</span><strong>${esc(name)}</strong><select class="role-assign" data-n="${i}"><option value="">Unassigned</option>${roles.map(r=>`<option value="${r}">${r}</option>`).join('')}</select></div>`).join('')}<div class="actions"><button onclick="applyImport()">Apply roles</button><button class="secondary" onclick="$('importpreview').hidden=true;pendingImport=null">Cancel</button></div>`;wireImportDrag();
+  }catch(e){alert(e.message)}
+}
+function applyImport(){if(!pendingImport)return;const used=new Set(),values={};
+  for(const select of document.querySelectorAll('.role-assign')){if(!select.value)continue;if(used.has(select.value)){alert('Each role can only be assigned once.');return}used.add(select.value);values[select.value]=pendingImport.players[+select.closest(".import-line").dataset.idx]}
+  const t=pendingImport.team;for(const [role,name] of Object.entries(values)){document.querySelector(`.riotid[data-team="${t}"][data-role="${roles.indexOf(role)}"]`).value=name}
+  $('importpreview').hidden=true;pendingImport=null;$('status').textContent='Riot IDs assigned. Please save settings.';
+}
+// Prime League metadata is previewed first, then applied only on explicit click.
+let pendingPrimeLeague=null;
+function guessPrimeRole(name, teamIndex, used){
+  const norm=x=>String(x||'').trim().toLocaleLowerCase();
+  const current=roles.find((role,i)=>norm(document.querySelector(`.riotid[data-team="${teamIndex}"][data-role="${i}"]`)?.value)===norm(name));
+  if(current && !used.has(current)){used.add(current);return current}
+  const tag=name.split('#').slice(-1)[0].toUpperCase();
+  const hints={TOP:'TOP',JNG:'JUNGLE',JGL:'JUNGLE',JUNGLE:'JUNGLE',MID:'MID',ADC:'ADC',BOT:'ADC',SUP:'SUPPORT',SUPP:'SUPPORT',SUPPORT:'SUPPORT'};
+  const chosen=hints[tag];if(chosen&&!used.has(chosen)){used.add(chosen);return chosen}return '';
+}
+function showPrimePreview(data){
+  if(!Array.isArray(data.teams)||data.teams.length!==2)throw Error('Prime League did not return two teams.');
+  pendingPrimeLeague=data.teams;
+  const preview=$('prime-preview');preview.hidden=false;
+  preview.innerHTML=`<strong>PRIME LEAGUE IMPORT PREVIEW</strong><p class="tip">Full names, short names, logos and OP.GG links are imported. Only assign lineup players to a role you recognize. Empty roles are skipped.</p><div class="prime-result-grid">${data.teams.map((t,i)=>{
+    const used=new Set();
+    return `<div class="prime-result-card" data-prime-team="${i}"><div>${t.logo_data?`<img src="${esc(t.logo_data)}" alt="">`:''}<h3>${esc(t.name)} <small>(${esc(t.short_name)})</small></h3></div><div class="tip">${t.opgg_url?'OP.GG link found':'No OP.GG link'} · ${t.players.length} Riot IDs</div>${t.players.map((p,j)=>{const preset=guessPrimeRole(p,i,used);return `<div class="prime-player-row"><span title="${esc(p)}">${esc(p)}</span><select data-prime-team="${i}" data-prime-player="${j}"><option value="">Unassigned</option>${roles.map(r=>`<option value="${r}" ${preset===r?'selected':''}>${r}</option>`).join('')}</select></div>`}).join('')}</div>`;
+  }).join('')}</div><div class="prime-preview-actions"><button type="button" onclick="applyPrimeLeague()">Apply to teams</button><button class="secondary" type="button" onclick="$('prime-preview').hidden=true;pendingPrimeLeague=null">Cancel</button></div>`;
+  preview.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+async function stopScanForNewLineup(){
+  let s=await api('/api/status');
+  if(!s.running)return;
+  $('status').textContent='Stopping the previous SoloQ scan…';
+  await api('/api/stop',{});
+  const deadline=Date.now()+40000;
+  while(Date.now()<deadline){
+    await new Promise(resolve=>setTimeout(resolve,350));
+    s=await api('/api/status');
+    if(!s.running)return;
+  }
+  throw Error('The previous API request is still finishing. Please retry the import. Cached matches are safe.');
+}
+async function primeLeagueImport(url, tab){
+  const button=$('prime-import-url');button.disabled=true;
+  try{
+    await stopScanForNewLineup();
+    $('status').textContent='Starting Firefox match import…';
+    await api('/api/prime-league/browser-start',{url});
+    if(tab){tab.location.replace(url)}
+    else{
+      const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';
+      $('status').textContent='Open the Prime League URL in Firefox, then return here. Check pop-up permissions.';
+    }
+    const started=Date.now();
+    while(Date.now()-started<68000){
+      await new Promise(r=>setTimeout(r,1000));
+      const s=await fetch('/api/prime-league/browser-status').then(r=>r.json());
+      if(s.status==='ready'){
+        showPrimePreview({teams:s.teams,source:'firefox'});
+        $('status').textContent='Match loaded from Firefox. Check teams and confirm.';
+        return;
+      }
+      if(s.status==='timeout'||s.status==='error')throw Error(s.error||'Firefox import expired.');
+      if(Date.now()-started>11000){
+        $('status').textContent='Waiting for Firefox helper… If nothing appears, install the helper once (link above).';
+      }else $('status').textContent='Waiting for Prime League page in Firefox…';
+    }
+    throw Error('Firefox helper did not respond. Check that it is installed and enabled on primeleague.gg.');
+  }finally{button.disabled=false}
+}
+if($('prime-import-url'))$('prime-import-url').onclick=()=>{
+  const url=$('prime-url').value.trim();
+  // Open a browser tab in the actual user click, before any async operation.
+  // This avoids a popup blocker on the subsequent network awaits.
+  const tab=window.open('about:blank','_blank');
+  primeLeagueImport(url,tab).catch(e=>{if(tab&&!tab.closed&&tab.location.href==='about:blank')tab.close();alert(e.message)});
+};
+if($('prime-diagnose'))$('prime-diagnose').onclick=async()=>{
+  const target=$('prime-diagnostics');target.hidden=false;
+  target.textContent='Checking Prime League access (HTTP and local headless browser)…';
+  $('prime-diagnose').disabled=true;
+  try{
+    const outcome=await api('/api/prime-league/diagnose',{url:$('prime-url').value});
+    target.textContent='ACCESS DIAGNOSTICS (safe to copy)\n'+JSON.stringify(outcome,null,2)+
+      '\n\nIf this fails but the match page opens in Firefox, Prime League likely rejects automated clients. This check does not read Firefox cookies or session data.';
+  }catch(e){target.textContent='Diagnostics failed: '+e.message}
+  finally{$('prime-diagnose').disabled=false}
+};
+
+async function applyPrimeLeague(){
+  if(!pendingPrimeLeague)return;
+  try{
+    await stopScanForNewLineup();
+  const applied=[];
+  for(let i=0;i<2;i++){
+    const t=pendingPrimeLeague[i], mapped=Array(5).fill(''), used=new Set();
+    document.querySelectorAll(`select[data-prime-team="${i}"]`).forEach(select=>{
+      if(!select.value)return;
+      if(used.has(select.value))throw Error('Each role must be assigned only once within its team.');
+      used.add(select.value);mapped[roles.indexOf(select.value)]=t.players[+select.dataset.primePlayer];
+    });
+    applied.push({team:t,mapped});
+  }
+  if(!confirm('Apply Prime League teams in page order? Actual Blue/Red side can be swapped later. Existing lineups for different teams will be replaced.'))return;
+    for(let i=0;i<2;i++){
+      const {team:t,mapped}=applied[i];const nameBox=document.querySelector(`.teamname[data-team="${i}"]`);
+      const prevName=nameBox.value.trim().toLowerCase();const sameTeam=prevName===t.name.trim().toLowerCase();
+      nameBox.value=t.name;document.querySelector(`.team-short[data-team="${i}"]`).value=t.short_name;
+      $(i?'importred':'importblue').value=t.opgg_url||'';
+      for(let ri=0;ri<5;ri++){
+        const input=document.querySelector(`.riotid[data-team="${i}"][data-role="${ri}"]`);
+        if(mapped[ri])input.value=mapped[ri];
+        else if(!sameTeam)input.value='';
+      }
+      if(!t.logo_data && !sameTeam && window.currentTeamLogos[i]){
+        await api('/api/team-logo-remove',{team:i});
+        window.currentTeamLogos[i]='';
+        document.querySelector(`.logo-file[data-team="${i}"]`).dataset.logo='';
+        document.querySelector(`.logo-preview[data-logo-preview="${i}"]`).src='/default-team-logo.svg?v=125';
+        document.querySelector(`.remove-logo[data-team="${i}"]`).hidden=true;
+      }
+      if(t.logo_data){
+        const result=await api('/api/team-logo',{team:i,image:t.logo_data});
+        window.currentTeamLogos[i]=result.logo;
+        document.querySelector(`.logo-file[data-team="${i}"]`).dataset.logo=result.logo;
+        document.querySelector(`.logo-preview[data-logo-preview="${i}"]`).src=result.logo+'?v='+Date.now();
+        document.querySelector(`.remove-logo[data-team="${i}"]`).hidden=false;
+      }
+    }
+    await save();
+    $('prime-preview').hidden=true;pendingPrimeLeague=null;
+    const cfg=await api('/api/config');
+    if(cfg.has_key && applied.some(a=>a.mapped.some(Boolean))){
+      await api('/api/start',{});
+      $('status').textContent='Match imported · SoloQ update running in background.';
+    }else $('status').textContent='Match imported. Review the Blue/Red side before the broadcast.';
+  }catch(e){alert('Import not fully applied: '+e.message)}
+}
+function collect(){const teams=[0,1].map(i=>({name:document.querySelector(`.teamname[data-team="${i}"]`).value,short_name:document.querySelector(`.team-short[data-team="${i}"]`).value,opgg_url:$(i?'importred':'importblue').value,players:roles.map((_,j)=>document.querySelector(`.riotid[data-team="${i}"][data-role="${j}"]`).value),logo:document.querySelector(`.logo-file[data-team="${i}"]`).dataset.logo||window.currentTeamLogos?.[i]||''}));let p=$('platform').value;let region=({euw1:'europe',eun1:'europe',tr1:'europe',ru:'europe',na1:'americas',br1:'americas',la1:'americas',la2:'americas',kr:'asia',jp1:'asia',oc1:'sea'})[p];return {api_key:$('key').value,platform:p,region,season_start:$('season').value+'-01-01T00:00:00Z',teams}}
+async function save(){await api('/api/config',collect());$('key').value='';const cfg=await api('/api/config');updateApiIndicator(cfg.has_key);$('status').textContent='Settings saved.'}
+async function refresh(){const d=await api('/api/results');$('seasonwarn').hidden=!d.season_info?.needs_confirmation;if(d.season_info?.needs_confirmation)$('seasonwarn').textContent=d.season_info.message;}
+
+async function poll(){try{const s=await api('/api/status');$('start').disabled=s.running;$('save').disabled=s.running;$('stop').hidden=!s.running;$('status').textContent=s.progress+(s.total?` · ${s.done}/${s.total}`:'');if(s.error)$('status').textContent='Notice: '+s.error;if(!s.running){await refresh();if(!s.error && s.updated){const all=await api('/api/results');const values=Object.values(all).filter(x=>x&&typeof x==='object'&&typeof x.riot_id==='string');updateApiIndicator(true)}}}catch(e){$('status').textContent=e.message}}
+let intervalDirty=false;
+function syncInterval(n){n=Math.min(60,Math.max(1,Math.round(Number(n)||1)));$('roleinterval').value=String(n);$('roleintervalnum').value=String(n);return n}
+async function overlayControl(command){try{const o=await api('/api/overlay-control',command);syncInterval(o.interval);$('shownrole').textContent=roles[o.role];selectPreRole(o.role);syncPause(o.auto)}catch(e){alert(e.message)}}
+$('roleinterval').oninput=e=>{$('roleintervalnum').value=e.target.value;intervalDirty=true};
+$('roleinterval').onchange=e=>{intervalDirty=false;overlayControl({interval:syncInterval(e.target.value)})};
+$('roleintervalnum').oninput=e=>{intervalDirty=true;const n=Number(e.target.value);if(n>=1&&n<=60)$('roleinterval').value=n};
+$('roleintervalnum').onchange=e=>{intervalDirty=false;overlayControl({interval:syncInterval(e.target.value)})};
+async function swapTeams(){if(!confirm('Swap Blue and Red sides? Team names, players, logos and stats will switch sides.'))return;const buttons=[$('swapteams'),$('swapteams-post')];buttons.forEach(b=>b.disabled=true);try{if(!$('start').disabled)await save();await api('/api/swap-teams',{});const c=await api('/api/config');buildTeams(c);await refresh();$('status').textContent='Team sides swapped.';await pgPoll()}catch(e){alert(e.message)}finally{buttons.forEach(b=>b.disabled=false)}}
+$('swapteams').onclick=swapTeams;$('swapteams-post').onclick=swapTeams;
+function syncPause(active){const b=$('pauseoverlay');b.setAttribute('aria-pressed',String(!active));b.textContent=active?'⏸ Pause':'▶ Resume';$('autoroleinfo').textContent=active?'Automatic role rotation active.':'Role rotation paused.'}
+$('pauseoverlay').onclick=async()=>{try{const o=await api('/api/overlay-state');await overlayControl({auto:!o.auto})}catch(e){alert(e.message)}};
+$('prevrole').onclick=()=>overlayControl({direction:-1});$('nextrole').onclick=()=>overlayControl({direction:1});
+async function initOverlayControl(){try{const o=await api('/api/overlay-state');syncInterval(o.interval);$('shownrole').textContent=roles[o.role];selectPreRole(o.role);syncPause(o.auto)}catch{}}
+async function pollOverlay(){try{const o=await api('/api/overlay-state');$('shownrole').textContent=roles[o.role];selectPreRole(o.role);if(!intervalDirty)syncInterval(o.interval);syncPause(o.auto)}catch{}}
+$('save-riot-settings').onclick=async()=>{try{await save();$('prefs-status').textContent='Riot settings saved.'}catch(e){alert(e.message)}};
+$('save').onclick=async()=>{try{await save()}catch(e){alert(e.message)}};$('start').onclick=async()=>{try{await save();await api('/api/start',{});await poll()}catch(e){alert(e.message)}};$('stop').onclick=async()=>{await api('/api/stop',{})};(async()=>{const c=await api('/api/config');$('platform').value=c.platform;const currentYear=new Date().getUTCFullYear();const selected=Number(c.season_start.slice(0,4));for(let year=currentYear;year>=2026;year--){const opt=document.createElement('option');opt.value=String(year);opt.textContent=String(year);$('season').appendChild(opt)}$('season').value=String(selected);$('key').placeholder=c.has_key?'Key saved – leave blank to keep it':'RGAPI-…';updateApiIndicator(c.has_key);setupCollapsiblePanels(c.has_key);buildTeams(c);await refreshCacheSummary();await initOverlayControl();await poll();setInterval(poll,2500);setInterval(pollOverlay,1000)})().catch(e=>alert(e.message));
+
+// Broadcast appearance settings: changeable even during an active SoloQ scan.
+const settingFields={blue_color:'pref-blue',red_color:'pref-red',font:'pref-font',number_locale:'pref-number-locale',show_first_blood:'pref-first-blood',show_dragons:'pref-dragons',show_baron:'pref-baron',show_swings:'pref-swings',show_damage_composition:'pref-damage'};
+const DEFAULT_SIDE_COLORS={blue:'#4DBBEB',red:'#F56C91'};
+const pickerState={blue:{h:0,s:1,v:1},red:{h:0,s:1,v:1}};
+function rgbToHsv(r,g,b){r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;let h=0;if(d){switch(mx){case r:h=((g-b)/d)%6;break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4}h=(h*60+360)%360}return {h,s:mx===0?0:d/mx,v:mx}}
+function hsvToHex(h,s,v){const c=v*s,x=c*(1-Math.abs((h/60)%2-1)),m=v-c;let t=h<60?[c,x,0]:h<120?[x,c,0]:h<180?[0,c,x]:h<240?[0,x,c]:h<300?[x,0,c]:[c,0,x];return '#'+t.map(n=>Math.round((n+m)*255).toString(16).padStart(2,'0')).join('').toUpperCase()}
+function validHex(value){return /^#[0-9a-f]{6}$/i.test(value)}
+function setPickerColor(side,hex){if(!validHex(hex))return;hex=hex.toUpperCase();const v=[1,3,5].map(n=>parseInt(hex.slice(n,n+2),16));const previous=pickerState[side],hsv=rgbToHsv(...v);if(hsv.s===0)hsv.h=previous.h;pickerState[side]=hsv;syncPicker(side,hex)}
+function syncPicker(side,hex){const st=pickerState[side];hex=hex||hsvToHex(st.h,st.s,st.v);$('pref-'+side).value=hex;$('pref-'+side+'-hex').textContent=hex;$('swatch-'+side).style.background=hex;$('hex-'+side).value=hex;$('hue-'+side).value=Math.round(st.h);$('palette-'+side).style.backgroundColor=`hsl(${st.h} 100% 50%)`;$('cursor-'+side).style.left=(st.s*100)+'%';$('cursor-'+side).style.top=((1-st.v)*100)+'%'}
+function closePickers(except){for(const side of ['blue','red']){if(side===except)continue;$('picker-'+side).hidden=true;$('open-color-'+side).setAttribute('aria-expanded','false')}}
+for(const side of ['blue','red']){
+  $('open-color-'+side).addEventListener('click',()=>{const panel=$('picker-'+side),opening=panel.hidden;closePickers();panel.hidden=!opening;$('open-color-'+side).setAttribute('aria-expanded',String(opening))});
+  $('reset-color-'+side).addEventListener('click',()=>setPickerColor(side,DEFAULT_SIDE_COLORS[side]));
+  $('hue-'+side).addEventListener('input',e=>{pickerState[side].h=Number(e.target.value);syncPicker(side)});
+  const palette=$('palette-'+side);
+  function updatePalette(e){const rect=palette.getBoundingClientRect();const st=pickerState[side];st.s=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));st.v=1-Math.max(0,Math.min(1,(e.clientY-rect.top)/rect.height));syncPicker(side)}
+  palette.addEventListener('pointerdown',e=>{palette.setPointerCapture(e.pointerId);updatePalette(e)});
+  palette.addEventListener('pointermove',e=>{if(e.buttons&1)updatePalette(e)});
+  palette.addEventListener('keydown',e=>{const st=pickerState[side],step=e.shiftKey?.1:.02;if(e.key==='ArrowRight')st.s=Math.min(1,st.s+step);else if(e.key==='ArrowLeft')st.s=Math.max(0,st.s-step);else if(e.key==='ArrowUp')st.v=Math.min(1,st.v+step);else if(e.key==='ArrowDown')st.v=Math.max(0,st.v-step);else return;e.preventDefault();syncPicker(side)});
+  $('hex-'+side).addEventListener('change',e=>{let h=e.target.value.trim();if(/^[0-9a-f]{6}$/i.test(h))h='#'+h;if(validHex(h))setPickerColor(side,h);else e.target.value=$('pref-'+side).value});
+  document.querySelector('[data-done="'+side+'"]').addEventListener('click',()=>closePickers());
+}
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('.color-control'))closePickers()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePickers()});
+async function loadPreferences(){const p=await api('/api/preferences');for(const [key,id] of Object.entries(settingFields)){if(key==='blue_color'||key==='red_color'){setPickerColor(key==='blue_color'?'blue':'red',p[key]);continue}const el=$(id);if(el.type==='checkbox')el.checked=Boolean(p[key]);else el.value=p[key]}};
+$('save-preferences').onclick=async()=>{let p={};for(const [key,id] of Object.entries(settingFields)){const el=$(id);p[key]=el.type==='checkbox'?el.checked:el.value}let btn=$('save-preferences');btn.disabled=true;try{await api('/api/preferences',p);$('prefs-status').textContent='Saved. OBS overlays update automatically.';setTimeout(()=>$('prefs-status').textContent='',4500)}catch(e){alert(e.message)}finally{btn.disabled=false}};
+loadPreferences().catch(e=>{$('prefs-status').textContent='Could not load appearance: '+e.message});
+</script></body></html>

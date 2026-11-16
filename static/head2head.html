@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PrimeCast · Postgame Head to Head</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Oswald:wght@500;600;700&family=Rajdhani:wght@600;700&display=swap');
+
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent;color:#f4f7fb;font-family:Arial,sans-serif}#stage{position:absolute;width:1920px;height:1080px;transform-origin:top left}#surface{position:absolute;inset:105px 315px 108px;background:linear-gradient(100deg,rgba(3,22,45,.97),rgba(6,12,27,.97) 52%,rgba(40,9,28,.96));border-top:0;box-shadow:0 16px 45px #0009;overflow:hidden;animation:enter 1.55s cubic-bezier(.15,.7,.3,1) both}@keyframes enter{from{opacity:0;transform:translateY(65px)}to{opacity:1;transform:translateY(0)}}
+header{position:relative;display:grid;grid-template-columns:1fr 180px 1fr;align-items:center;padding:25px 44px 18px;border-bottom:1px solid #ffffff38}header .team{font:38px var(--cast-font,Impact);text-transform:uppercase;letter-spacing:1px}header .team.right{text-align:right}header .middle{text-align:center}header .middle strong{font:56px var(--cast-font,Impact)}header .middle span{font:14px var(--cast-font,Impact);display:block;letter-spacing:2px;color:#bcc7d4;margin-top:8px}.logo{width:84px;height:84px;object-fit:contain;vertical-align:middle;margin:0 12px;filter:drop-shadow(0 2px 5px #000a)}.row-team{display:flex;align-items:center;gap:8px}.row-team.right{justify-content:flex-end}
+main{padding:18px 58px}.playerband{display:grid;grid-template-columns:1fr 100px 1fr;align-items:center;gap:16px;height:175px}.player{position:relative;min-width:0;display:flex;align-items:center;gap:22px}.player.right{flex-direction:row-reverse;text-align:right}.champ{width:140px;height:140px;flex:0 0 140px;object-fit:cover;border:2px solid #ffffff3b;box-shadow:0 0 26px #02040c}.player .name{font:45px var(--cast-font,Impact);line-height:1.08;word-break:break-word}.player .champname{font:18px Arial;margin-top:10px;color:#b9c7d6}.vs{text-align:center;font:53px var(--cast-font,Impact);color:#e0b478}
+.h2h-stats{display:grid;gap:5px;margin-top:13px}.h2h-stat{display:grid;grid-template-columns:1fr 194px 1fr;min-height:57px;align-items:center;gap:38px;border-bottom:1px solid #ffffff1b}.h2h-stat .label{font:19px var(--cast-font,Impact);letter-spacing:.9px;text-align:center;color:#cdd3db}.h2h-stat .val{font:29px var(--cast-font,Impact)}.h2h-stat .blue{text-align:right;color:var(--cast-blue,#69caff)}.h2h-stat .red{text-align:left;color:var(--cast-red,#ff869d)}.h2h-stat .sub{font:13px Arial;color:#aab6c5}.h2h-stat .val small{font:13px Arial;color:#9aafc1}.note{text-align:center;font:12px Arial;color:#7a899b;margin-top:20px}.empty{text-align:center;font:40px var(--cast-font,Impact);margin-top:280px;color:#c2cad5}
+
+/* Compact broadcast card with subdued full champion splash artwork. */
+#surface{isolation:isolate}
+.h2h-background{position:absolute;inset:0;z-index:0;pointer-events:none;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.h2h-background .art{background-size:cover;background-position:center 24%;opacity:.55;transition:background-image .5s,opacity 1s;filter:saturate(1.04)}
+.h2h-background .art.left{mask-image:linear-gradient(to right,#000 5%,transparent 95%)}
+.h2h-background .art.right{mask-image:linear-gradient(to left,#000 5%,transparent 95%)}
+.h2h-background:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#07132567,#090e1dcd 45%,#090e1dcd 55%,#1b091b71)}
+#surface > header,#surface > main{position:relative;z-index:1}
+header .middle img{display:block;width:92px;height:92px;margin:0 auto;object-fit:contain;filter:drop-shadow(0 4px 7px #0009)}
+header .middle span{margin-top:0}
+.team-victory{font:19px var(--cast-font,Impact),Arial;letter-spacing:1px;color:#76d9b9;margin-left:10px;white-space:nowrap}
+.row-team.right .team-victory{margin-left:0;margin-right:10px}
+.team-victory.side-l{color:var(--cast-blue,#64ccff)}.team-victory.side-r{color:var(--cast-red,#ff8da0)}
+.player .name .riot-tag{font:19px Arial,sans-serif;color:#a9bccc;white-space:nowrap;vertical-align:baseline;margin-left:7px}
+.h2h-stat{grid-template-columns:minmax(0,1fr) 210px minmax(0,1fr);gap:45px}
+.h2h-background .art{background-position:center 30%}
+.player .name{font-size:40px}
+#surface .champ{border-color:#ffffff3b}
+.h2h-stat .label{font-size:18px}
+.h2h-stat .val{font-size:28px}
+
+/* v1.33 – match overview design alignment */
+#surface{left:275px;right:275px}
+header{grid-template-columns:minmax(0,1fr) 165px minmax(0,1fr)}
+.row-team{position:relative;min-width:0;padding-right:80px}
+.row-team.right{padding-right:0;padding-left:80px}
+.row-team .team{min-width:0;font-size:34px;overflow-wrap:anywhere}
+.row-team .team-victory{position:absolute;right:0;top:50%;transform:translateY(-50%);margin:0}
+.row-team.right .team-victory{left:0;right:auto;margin:0}
+.h2h-background{top:158px}
+.h2h-background:after{background:linear-gradient(90deg,#07132565,#090e1db9 43%,#090e1db9 57%,#1b091b65)}
+.h2h-background .art{opacity:.64}
+header .middle img{width:83px;height:83px}
+.playerband{grid-template-columns:minmax(0,1fr) 100px minmax(0,1fr)}
+.player .champ{width:98px;height:98px;flex-basis:98px}
+.player .name .riot-tag{font-family:var(--cast-font,Impact),'Arial Narrow',sans-serif;font-size:21px;font-weight:700;color:#d5deea;margin-left:7px}
+.vs{align-self:center;margin-top:0}
+
+/* v1.34: compact H2H with stable headline alignment and proper skin artwork boundary. */
+#surface{left:340px;right:340px}
+header{padding:23px 38px 16px;grid-template-columns:minmax(0,1fr) 136px minmax(0,1fr)}
+header .row-team .team{font-size:33px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal}
+header .team-victory{font-size:25px}
+header .middle img{width:83px;height:83px}
+main{padding:13px 38px 20px}
+.playerband{height:155px;grid-template-columns:minmax(0,1fr) 83px minmax(0,1fr);gap:12px}
+.player{gap:12px;align-self:stretch;min-width:0}
+.player .champ{width:77px;height:77px;flex:0 0 77px}
+.player .name{font-size:32px;line-height:1.05;overflow-wrap:anywhere}
+.player .name .riot-tag{font:600 14px Arial,sans-serif;letter-spacing:0;color:#d2dbe7;margin-left:5px;white-space:nowrap}
+.player .champname{font:15px Arial,sans-serif;margin-top:7px}
+.playerband .vs{font-size:53px;align-self:start;margin-top:53px;line-height:1}
+/* Header height is variable due to fonts; use a boundary controlled by the actual header element. */
+/* Snap the artwork to the header divider, with a 2px overlap behind the line.
+   The header stays above the artwork so its border remains crisp. */
+.h2h-background{top:var(--header-edge,153px)}
+.h2h-stats{margin-top:3px}
+.h2h-stat{grid-template-columns:minmax(0,1fr) 194px minmax(0,1fr);gap:30px;min-height:56px}
+.h2h-stat .label{font-size:17px}
+.h2h-stat .val{font-size:27px}
+</style></head><body><div id="stage"><div id="surface"><div class="h2h-background"><div class="art left" id="art-l"></div><div class="art right" id="art-r"></div></div><header><div class="row-team"><img class="logo" id="logo-l"><span class="team" id="team-l">BLUE SIDE</span><span class="team-victory" id="winner-l"></span></div><div class="middle"><img id="role" alt="Role icon" onerror="this.onerror=null;this.src='/fallback-role/top.svg'" src="/assets/role/top.png"><span>HEAD TO HEAD</span></div><div class="row-team right"><span class="team-victory" id="winner-r"></span><span class="team right" id="team-r">RED SIDE</span><img class="logo" id="logo-r"></div></header><main><div class="playerband"><div class="player"><img class="champ" id="champ-l"><div><div class="name" id="name-l">–</div><div class="champname" id="cname-l"></div></div></div><div class="vs">VS</div><div class="player right"><img class="champ" id="champ-r"><div><div class="name" id="name-r">–</div><div class="champname" id="cname-r"></div></div></div></div><div class="h2h-stats" id="stats"></div></main></div></div>
+<script>
+
+const DEFAULT_VISUALS={blue_color:'#4DBBEB',red_color:'#F56C91',font:'Impact',show_first_blood:true,show_dragons:true,show_baron:true,show_swings:true,show_damage_composition:true,number_locale:'de-DE'};
+let broadcastPrefs={...DEFAULT_VISUALS};
+function updateBroadcastPreferences(p){
+ broadcastPrefs={...DEFAULT_VISUALS,...p};
+ const root=document.documentElement;
+ root.style.setProperty('--cast-blue',broadcastPrefs.blue_color);
+ root.style.setProperty('--cast-red',broadcastPrefs.red_color);
+ root.style.setProperty('--cast-font',JSON.stringify(broadcastPrefs.font)+', Impact, Arial, sans-serif');
+}
+async function pollBroadcastPreferences(){try{const r=await fetch('/api/preferences',{cache:'no-store'});if(r.ok)updateBroadcastPreferences(await r.json())}catch(e){console.warn('Visual settings unavailable',e)}}
+pollBroadcastPreferences();setInterval(pollBroadcastPreferences,2500);
+
+const $=id=>document.getElementById(id),roles=['TOP','JUNGLE','MID','ADC','SUPPORT'];let stateKey='';
+function resize(){const scale=Math.min(innerWidth/1920,innerHeight/1080);$('stage').style.transform=`scale(${scale})`;$('stage').style.left=(innerWidth-1920*scale)/2+'px';$('stage').style.top=(innerHeight-1080*scale)/2+'px'}window.addEventListener('resize',()=>{resize();requestAnimationFrame(positionElements)});resize();
+function splashUrls(p){
+ const champ=String(p?.champion||'');if(!champ)return [];
+ // Match-V5 championSkinId is typically championId*1000 + skin number.
+ const skinId=Number(p.skin_id||0), championId=Number(p.champion_id||0);
+ const skinNumber=skinId>0&&championId>0?skinId-championId*1000:0;
+ const root='https://ddragon.leagueoflegends.com/cdn/img/champion/splash/'+encodeURIComponent(champ)+'_';
+ return [...new Set([skinNumber>=0&&skinNumber<1000?skinNumber:0,0])].map(n=>root+n+'.jpg');
+}
+const artVersions={l:0,r:0};
+function updateArtwork(side,p){
+ const el=$('art-'+side),urls=splashUrls(p),stamp=++artVersions[side];
+ if(!urls.length){el.style.backgroundImage='none';return;}
+ function tryUrl(i){if(i>=urls.length){if(stamp===artVersions[side])el.style.backgroundImage='none';return;}
+  const image=new Image();image.onload=()=>{if(stamp===artVersions[side])el.style.backgroundImage='url("'+urls[i]+'")'};
+  image.onerror=()=>{if(stamp===artVersions[side])tryUrl(i+1)};image.src=urls[i];
+ }
+ tryUrl(0);
+}
+function champUrl(c){return 'https://ddragon.leagueoflegends.com/cdn/16.22.1/img/champion/'+encodeURIComponent(c||'')+'.png'}
+function label(x){return String(x||'UNKNOWN')}
+const championLabels={Kaisa:"Kai'Sa",Khazix:"Kha'Zix",Chogath:"Cho'Gath",KogMaw:"Kog'Maw",RekSai:"Rek'Sai",Belveth:"Bel'Veth",Velkoz:"Vel'Koz",LeeSin:'Lee Sin',MissFortune:'Miss Fortune',TwistedFate:'Twisted Fate',AurelionSol:'Aurelion Sol',DrMundo:'Dr. Mundo',JarvanIV:'Jarvan IV',MasterYi:'Master Yi',TahmKench:'Tahm Kench',XinZhao:'Xin Zhao',RenataGlasc:'Renata Glasc',Nunu:'Nunu & Willump',MonkeyKing:'Wukong',FiddleSticks:'Fiddlesticks'};
+function championDisplay(id){return championLabels[id]||String(id||'')}
+function playerNameHtml(x){const str=label(x),at=str.lastIndexOf('#');const name=at>0?str.slice(0,at):str,tag=at>0?str.slice(at):'';return escapeHtml(name)+(tag?'<span class="riot-tag">'+escapeHtml(tag)+'</span>':'')}
+function escapeHtml(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function num(x){return x===undefined||x===null?'–':Math.round(x).toLocaleString(broadcastPrefs.number_locale||'de-DE')}
+function positionElements(){
+ const card=$('surface'),head=card.querySelector('header'),name=$('name-l'),vs=card.querySelector('.vs');
+ if(!card||!head||!name||!vs)return;
+ const bounds=card.getBoundingClientRect(),edge=head.getBoundingClientRect();
+ const scale=bounds.width/card.offsetWidth||1;
+ // Anchor to the divider itself rather than the area below its border.
+ // A 2px overlap eliminates subpixel seams in OBS/Chromium scaling.
+ const dividerOverlap=2;
+ card.style.setProperty('--header-edge',Math.max(0,(edge.bottom-bounds.top)/scale-dividerOverlap).toFixed(2)+'px');
+ vs.style.transform='none';
+ const nr=name.getBoundingClientRect(),vr=vs.getBoundingClientRect();
+ const offset=(nr.top+nr.height/2)-(vr.top+vr.height/2);
+ vs.style.transform='translateY('+Math.max(-70,Math.min(70,offset/scale)).toFixed(1)+'px)';
+}
+function render(m,c,ctl,ver){if(!m||!m.teams||m.teams.length!==2){$('stats').innerHTML='<div class="empty">LOAD A POSTGAME MATCH</div>';return}
+ const role=ctl.role||0,t1=m.teams[0],t2=m.teams[1],a=t1.players?.[role]||{},b=t2.players?.[role]||{};const iconName=({TOP:'top',JUNGLE:'jungle',MID:'mid',ADC:'adc',SUPPORT:'support'}[roles[role]]);$('role').onerror=()=>{$('role').onerror=null;$('role').src='/fallback-role/'+iconName+'.svg'};$('role').src='/assets/role/'+iconName+'.png';
+ for(const [side,p,t,i] of [['l',a,t1,0],['r',b,t2,1]]){
+  $('team-'+side).textContent=c?.[i]?.short_name?.trim()||c?.[i]?.name|| (i?'RED SIDE':'BLUE SIDE');$('name-'+side).innerHTML=playerNameHtml(p.name);
+  $('winner-'+side).textContent=t.win?'WIN':'LOSS';$('winner-'+side).className='team-victory side-'+side;updateArtwork(side,p);
+  $('cname-'+side).textContent=championDisplay(p.champion);$('champ-'+side).src=p.champion?champUrl(p.champion):'';
+  $('logo-'+side).src=c?.[i]?.logo?(c[i].logo+'?v='+encodeURIComponent(ver?.[i]||'')):'/default-team-logo.svg';
+ }
+ const fmtPct=x=>x===undefined||x===null?'–':Number(x).toLocaleString(broadcastPrefs.number_locale||'de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+ const get=(p,key)=>p?.[key]??null;
+ const diff=(k)=>{
+  let av=a?.at15?.[k],bv=b?.at15?.[k];return (av==null||bv==null)?['–','–']:[(av-bv>0?'+':'')+num(av-bv),(bv-av>0?'+':'')+num(bv-av)];
+ };
+ const gold15=diff('gold');
+ const rows=[
+  ['KDA',p=>[p.kills,p.deaths,p.assists].map(num).join(' / ')],
+  ['KILL PARTICIPATION',p=>fmtPct(p.kp)],
+  ['DAMAGE TO CHAMPIONS',p=>num(p.damage)],
+  ['DAMAGE SHARE',p=>fmtPct(p.damage_share)],
+  ['GOLD EARNED',p=>num(p.gold)],
+  ['CS',p=>num(p.cs)],
+  ['GOLD DIFF @15',null,gold15],
+  ['VISION SCORE',p=>num(p.vision)]
+ ];
+ $('stats').replaceChildren();
+ for(const [title,func,custom] of rows){let row=document.createElement('div');row.className='h2h-stat';let left=document.createElement('span');left.className='val blue';left.textContent=custom?custom[0]:func(a);let mid=document.createElement('span');mid.className='label';mid.textContent=title;let right=document.createElement('span');right.className='val red';right.textContent=custom?custom[1]:func(b);row.append(left,mid,right);$('stats').append(row)}
+ requestAnimationFrame(positionElements);
+}
+async function poll(){try{const [pr,cr]=await Promise.all([fetch('/api/postgame',{cache:'no-store'}),fetch('/api/h2h-control',{cache:'no-store'})]);const d=await pr.json(),c=await cr.json();let key=JSON.stringify([d.match?.match_id,d.match?.updated,d.teams,d.logo_versions,c.role]);if(key!==stateKey){stateKey=key;render(d.match,d.teams,c,d.logo_versions)}}catch(e){console.warn('Head2Head',e)}}poll();setInterval(poll,1300);
+window.addEventListener('resize',()=>requestAnimationFrame(positionElements));
+if(document.fonts?.ready)document.fonts.ready.then(()=>requestAnimationFrame(positionElements));
+</script></body></html>

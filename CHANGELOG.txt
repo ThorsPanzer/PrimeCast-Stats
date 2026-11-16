@@ -1,0 +1,332 @@
+v1.38.1 — 2026-11-16
+- Aligned the Head-to-Head champion splash backgrounds exactly to the team-header divider, accounting for subpixel scaling in OBS.
+- Recomputed the divider position when the browser size or loaded fonts change.
+
+v1.38 — 2026-11-16
+- Centered the Post-Game swap-sides control independently of heading and collapse controls.
+- Added a native web-based HSV color picker with hue, saturation, brightness, hex editing, and per-side default reset.
+- Kept the existing broadcast color defaults and API settings format.
+- The same changes apply to the personal build and the public GitHub distribution.
+
+PrimeCast Stats v1.37 — 2026-11-16
+- Adopted GNU GPL v3 as the standard open-source license; the license permits commercial redistribution.
+- Broadcast font selector: Impact, Anton, Oswald, Rajdhani, Archivo Black.
+- Converted remaining German status messages, comments, and bundled documentation to English.
+- Replaced obsolete publishing guidance, added a GitHub-ready README and attribution guidance, and renamed the launcher to START.cmd.
+- Hardened Git exclusions to exclude private settings, caches, and user assets while keeping bundled fallback SVGs.
+
+PrimeCast Stats v1.36 — 2026-11-16
+- Replaced font picker with broadcast-oriented fonts: Impact, Anton, Oswald, Teko, Rajdhani, Archivo Black.
+- Added European (de-DE) / US (en-US) number formatting in Settings, applied to all three OBS overlays.
+- Licensing: prepare explicit permission for monetized streams while restricting resale of the software; see LICENSE for terms and PUBLISHING.md for review notes.
+
+PrimeCast Stats v1.35 — Settings & customization (2026-11-16)
+- New Settings tab for Riot API, Local Cache and Broadcast appearance.
+- Two native color pickers for Blue / Red Side, shared by all broadcast overlays.
+- Selectable broadcast typography (Impact, Arial, Arial Narrow, Trebuchet MS, Segoe UI).
+- Separate Postgame switches for First Blood, Dragons, Baron, Gold Swings and Damage Composition.
+- Theme changes saved to config.json; no match download required and safe during SoloQ scans.
+- Postgame swap-sides control more prominent and centered.
+- Existing SoloQ cache, match data and team logos are preserved.
+
+v1.34 (2026-11-16)
+- Head-to-Head: fixed WIN/LOSS sizing, abbreviation display, aligned VS, tighter layout, and adjusted Riot tag.
+- Head-to-Head: champion skin splashes when available, safe fallback to default splash. Artwork starts exactly under the team header.
+- Postgame: first-blood icon smaller/brighter; damage legend 20% smaller.
+- German number formatting in the postgame chart and damage readouts.
+
+PrimeCast Stats — CHANGELOG
+===========================
+One consolidated changelog, newest version first.
+This document consolidates the notes for versions v1.20–v1.33.
+The v1.33.1 documentation-only update did not change application functionality.
+
+v1.33.1 — Documentation
+-----------------------
+- Merged individual UPDATE_v*.txt files into a single CHANGELOG.txt.
+- The abandoned Firefox userscript is no longer distributed.
+
+
+
+================================================================
+v1.33 — archived release notes
+================================================================
+PrimeCast Stats v1.33
+
+POSTGAME
+- Damage Composition: physical orange (#FF8C34), magic AP blue-violet (#7A6DFF), true unchanged.
+- Removed BLUE SIDE / RED SIDE captions over composition bars.
+- First Blood marker displayed white without changing the downloaded icon.
+- Gold Swing now has a high-contrast outlined badge and a more visible highlight between the curve and 0g.
+
+HEAD TO HEAD
+- Champion icons 30% smaller (140 to 98 px).
+- Wider frame with constant WIN/LOSS anchors in the header.
+- Splash artwork stops below the team header and is more visible.
+- Riot #TAG bold and aligned with Pregame style.
+- Role icon 10% smaller; same-height VS & player names.
+- Champions use display names (e.g. Kai'Sa, Cho'Gath, Lee Sin).
+- German numeric formatting: 55,4% and 20.934.
+
+Replace application files only. Preserve config.json, primecast.sqlite3 and all user image folders.
+
+
+================================================================
+v1.32 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.32 — Damage composition icon source correction
+
+- The old CommunityDragon attackdamage.png URL returned 404. It is no longer used.
+- Physical: now attempts the wiki Attack_damage_icon.svg media asset; Magic: the exact wiki Ability_power_icon.svg supplied by the user.
+- Auto-downloads once and caches verified SVG/PNG files locally. Wiki MediaWiki API URL resolution is attempted when available. No manual installation or download.
+- If neither wiki asset is accessible, the existing local placeholder remains. The currently visible AD/AP fallback may therefore differ until a successful download.
+- True Damage remains the existing neutral emblem. Actual damage calculations and all other functionality are unchanged.
+
+Retain config.json, primecast.sqlite3 and all existing image folders on update.
+
+
+================================================================
+v1.31 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.31
+
+- Postgame objective timeline: First Blood uses CommunityDragon's standalone League Client Match History kills.png symbol instead of a generic sword / unusable atlas. The program fetches it once automatically and caches it in static/objectives/first_blood.png, retaining the previous SVG while offline.
+- Head-to-head WIN/LOSS follows the same side-based palette as Postgame Overview: Blue Side blue, Red Side pink/red, independent of victory.
+- Biggest Gold Swing: meaningful three-minute reversal detection works through the entire match, including the final three minutes. Normal extension of an existing gold lead is still excluded; minimum swing remains 3,000 gold with a preceding opposing trend.
+- Damage Composition: removed the inappropriate CommunityDragon enhanced-physical/magic/true-damage glyphs. Physical uses the verified attackdamage.png emblem from League's client stat UI, cached separately as physical-ad.png to avoid accidentally reusing older enhanced icons. Magic uses a neutral AP-staff SVG stand-in until an authentic standalone AP glyph can be verified; True uses the existing neutral symbol. No user installation or manual download necessary.
+
+This release preserves all data and existing live charts. Already saved Postgame matches are recalculated locally on display; no fresh Riot download is necessary.
+
+When upgrading, retain config.json, primecast.sqlite3, static/logos, static/lanes, static/cached_rank_icons, and downloaded image caches. The old *physical.png, *magic.png or *true.png damage caches are intentionally bypassed in favor of corrected symbols.
+
+
+================================================================
+v1.30 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.30
+
+- Head-to-head: WIN/LOSS colors, stronger champion splash art, narrower broadcast card, smaller Riot ID tags, no upper accent border, wider stat-label spacing.
+- Postgame: damage-composition palette softened and tracks spaced apart, redundant border removed, legend with automatic local CommunityDragon damage-type icons and offline SVG fallback.
+- Gold graph: objective markers have no hover tooltip; swing now requires a prior opposing trend, excludes the final three minutes, and highlights only the area between the curve and 0g. Existing cached postgame data is re-evaluated locally without another API request.
+- Setup: Pre-Game Open preview button added; embedded Post-Game preview removed.
+- First Blood uses the existing sword fallback. The official First Blood art is an atlas, not a verified cropped icon.
+
+Retain config.json, primecast.sqlite3, static/logos/, static/lanes/, static/cached_rank_icons/, static/objectives/ and any cached PNGs in static/damage-icons/ when updating.
+
+
+================================================================
+v1.29 — archivierte Versionsnotizen
+================================================================
+v1.29: Objective icons download automatically from CommunityDragon on startup, cache in static/objectives, and are served locally to OBS. Existing SVG icons are used as offline fallback. No new dependencies. First Blood keeps the existing sword SVG because the public asset is a sprite atlas.
+
+
+================================================================
+v1.28 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.28 — Update notes
+
+PRE-GAME: Setup uses system fonts, role selection uses icons. Removed the unused Prime League URL/Firefox helper UI.
+POST-GAME: Three-minute Gold Swing highlights only when >=3,000 gold and outside the final three minutes. First Blood, every dragon (type recognized where available), and first Baron show icon markers on the gold graph. Objective icons shipped as local stylized vector fallbacks; they are NOT Riot-original assets.
+DAMAGE COMPOSITION: Physical red-orange, magic blue, true light gray. Blue/Red team split bars placed adjacent; segment percentages in the bars.
+HEAD TO HEAD: Only Gold Diff @15 retained, with default skin splash background when available, role icon, team WIN/LOSS, full Riot IDs, narrower broadcast area. Autoplay starts off and can be enabled; role controlled via icons.
+
+Replacement:
+1. Close PrimeCast Stats.
+2. Back up primecast.sqlite3.
+3. Replace application files; preserve config.json, primecast.sqlite3, static/logos, static/lanes, static/cached_rank_icons.
+4. Start STARTEN.cmd. For new skin/swing values, reload a completed match from its Game ID once.
+
+No extra programs or browser extensions required. This release does not change the SoloQ database schema.
+
+
+================================================================
+v1.27 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.27
+======================
+Postgame overview:
+- Gold graph shows largest 3-minute gold swing (shaded interval + number).
+- Event markers on the existing gold graph: first blood (FB), every dragon (D), first Baron (B). Tooltip on hover.
+- Physical / Magic / True damage-share bars for each team below the team statistics.
+
+New Head to Head OBS browser source:
+  http://127.0.0.1:8767/head2head
+- Compares TOP vs TOP, JUNGLE vs JUNGLE, MID vs MID, ADC vs ADC, SUPPORT vs SUPPORT.
+- KDA, kill participation, damage, damage share, gold, CS, gold/CS/XP difference at minute 15, vision score.
+- Automatically cycles roles, or select a role manually under Post-Game in the dashboard.
+- Uses the same Game ID already loaded in Postgame; no new Riot API endpoints required.
+
+IMPORTANT: For existing cached Postgame data, load the Game ID once again to compute
+these new statistics from Riot's Match V5 and Timeline V5 data. No SoloQ redownload.
+
+The existing config.json, primecast.sqlite3, static/logos/,
+static/lanes/ and static/cached_rank_icons/ must be preserved when updating.
+
+Testing: local Python compile, JS parse checks and synthetic match-data test completed.
+No live API-key or OBS render test was possible in this environment.
+
+
+================================================================
+v1.26 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.26
+
+Role icon animation reverted to a gentle, flat fade with a subtle horizontal movement. The canvas-based 3D cylinder effect has been removed. Original PNG colors remain unchanged. No other features changed.
+
+Keep config.json, primecast.sqlite3, static/logos/, static/lanes/, and static/cached_rank_icons/ when updating.
+
+
+================================================================
+v1.25 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.25
+
+1. Replaced placeholder logo with a dark, opaque, square shield WITHOUT text or baked shadow.
+2. Added optional normal-Firefox assisted Prime League URL importer for environments returning HTTP 403 to scripts.
+
+One-time Firefox setup: Install Violentmonkey or Tampermonkey. Open http://127.0.0.1:8767/primecast-primeleague.user.js in Firefox and install it.
+Afterward paste just a Prime League match URL in PrimeCast, click Import match; a regular browser tab opens and the helper forwards only visible team, lineup, OP.GG links, and logo data to local PrimeCast.
+The browser helper does not read cookies or bypass a forbidden page. It works ONLY if the match is readable in your normal Firefox.
+
+Preserve config.json, primecast.sqlite3, static/logos/, static/lanes/, static/cached_rank_icons/.
+
+3. Role symbol now rolls from left to right over a perspective cylinder; the left edge comes forward and the right edge recedes. Original PNG colors are unchanged.
+
+
+================================================================
+v1.24 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.24
+
+- Role icon keeps the natural colors of downloaded PNG assets. Removed the forced orange CSS tint.
+- On role transition, the icon fades and rotates in 3D from left to right; VS remains stable.
+- Neutral, rectangular NO LOGO pictogram replaces the team-shield-style fallback. No shadow inside asset.
+- Prime League import diagnosis: use "Diagnose 403" beside the URL import. Returns HTTP status and edge/chrome browser rendering diagnostics, without sharing Riot API keys or browser credentials.
+- Direct URL import may still be blocked by Prime League HTTP 403 or website bot protection. Diagnostics does NOT bypass restrictions; it identifies where the block occurs.
+
+Update only program files. Preserve config.json, primecast.sqlite3, static/logos/, static/lanes/, and static/cached_rank_icons/.
+
+
+================================================================
+v1.23 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.23
+
+- Prime League import: a running SoloQ scan is cancelled automatically and allowed to finish before a new lineup is applied. Previously downloaded match rows are retained.
+- URL import: when plain HTTP is blocked (403), a best-effort public-page rendering fallback uses local Microsoft Edge (or Chrome) if installed; no ZIP required in the UI. An anti-bot block/CAPTCHA still prevents reliable automated import.
+- Once an imported lineup is confirmed and saved, a new SoloQ scan starts if an API key is configured and there are assigned players.
+- Partial Top-5 values now publish progressively per player during the round-robin scan, rather than after that player's final season match. Figures settle as the entire season is downloaded; no quick-scan or pre-aggregated champion table.
+- Pre-game role icon changes to orange, sits farther above VS, and VS is slightly larger.
+- Live stat updates do not retrigger the central role-icon transition.
+- Default team logo is a flat, square, explicit NO LOGO placeholder with no embedded shadow.
+- Results from a replaced lineup are removed from the corresponding display slots; unrelated cached SoloQ data are kept.
+
+Keep: config.json, primecast.sqlite3, static/logos/, static/lanes/, static/cached_rank_icons/.
+Back up your database before replacing program files. Windows Python 3.10+; no third-party Python requirements.
+
+
+================================================================
+v1.22 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.22 – Prime League import + independent team-side switching
+
+UPDATE EXISTING INSTALLATION
+1. Stop PrimeCast Stats.
+2. Back up config.json and primecast.sqlite3.
+3. Copy v1.22 program files over your existing installation.
+4. Keep config.json, primecast.sqlite3, static/logos/, static/lanes/,
+   static/cached_rank_icons/ and any other locally cached assets.
+5. Run STARTEN.cmd, then hard-refresh your browser/OBS source if necessary.
+
+PRE-GAME – PRIME LEAGUE IMPORT
+- In "02 · Match setup" enter an official Prime League match URL and select
+  "Import match". PrimeCast reads full team names, short names, logos,
+  team OP.GG links and available Riot IDs.
+- If Prime League returns HTTP 403, Firefox "Save page, complete" can be
+  zipped together with its *_files assets folder. Choose that ZIP and
+  select "Import ZIP". The saved .htm file must be at the ZIP root.
+- Review the preview and manually assign any unknown roles before applying.
+  The OP.GG link order does NOT determine TOP/JUNGLE/MID/ADC/SUPPORT.
+  Riot ID #TOP/#JNG/#ADC hints and previously assigned roles are only
+  suggestions. Unassigned players are not silently mapped.
+- Source page listing order is NOT necessarily Blue/Red in the match.
+  Use the existing team swap control when the sides are announced.
+- If a team has not published its lineup, the team name/logo can still be
+  imported; you can assign players later.
+- The import changes no season stats until the next refresh. While a SoloQ
+  scan is running, changing the lineups still requires stopping that scan.
+
+TEAM SIDE SWAP DURING SOLOQ DOWNLOAD
+- Blue/Red swap now works even while Riot downloads continue in background.
+- Teams, logos, current profile summaries and finished champion statistics
+  move together. Later updates are saved to the CURRENT side even if
+  the scan started before the swap.
+- Downloads, progress and SQLite match cache remain intact.
+- A standard settings SAVE remains disabled during an active scan to avoid
+  changing the actual player roster while that scan is running.
+
+No schema migration or database reset is required by v1.22.
+
+
+================================================================
+v1.21 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.21
+
+IMPORTANT: Back up primecast.sqlite3 before starting this version!
+
+1. Stop PrimeCast and copy the v1.21 files over the existing installation.
+2. Keep config.json, primecast.sqlite3, static/logos/, static/lanes/, and static/cached_rank_icons/.
+3. Start STARTEN.cmd. The first launch migrates the legacy ten-player JSON cache into player_matches.
+4. SQLite VACUUM releases freed space. No Riot re-download should be needed for previously completed players referenced in the match lists.
+5. Local postgame and team data are preserved.
+
+New behavior:
+- Only the selected player's champion and win flag are stored per SoloQ match.
+- No precomputed champion aggregate table is created.
+- Neutral placeholder team logo is shown in Pregame/Postgame when no custom logo is uploaded.
+- OP.GG multisearch accepts /de/lol/multisearch/euw and /lol/multisearch/euw, including valid subdomains.
+
+Not yet implemented: automatic Prime League URL import (requires verifying live team/match pages).
+
+
+================================================================
+v1.20 — archivierte Versionsnotizen
+================================================================
+PrimeCast Stats v1.20 — Update
+
+PRE-GAME OVERLAY
+• Rank emblem: CSS view-window crops excessive transparency of panoramic original PNGs.
+  The original PNG bytes are not modified. Four supplied original emblem files
+  (Challenger, Grandmaster, Master, Diamond) are included as offline backups.
+  Your other Rank=Tier.png files remain usable in static/cached_rank_icons/.
+• The role icon is now above a centered, slightly smaller VS. The textual role
+  label is removed; the role icon is significantly larger.
+• Role icons are now served only as local PNGs to OBS. On first startup the
+  server tries to download official client role PNGs from CommunityDragon and
+  caches them in static/lanes/. If unavailable, it tries the LoL_DDragon GitHub
+  mirror. If both are unavailable, preexisting local PNGs are used.
+  Missing role icons are retried periodically; they never fall back to a
+  remote SVG in the OBS browser.
+
+RIOT DATA
+• Two-phase refresh remains: cheap rank/LP/W-L for all players first.
+• Full-season match details now download in round-robin order: 1 match per
+  player, repeat. This changes fairness, NOT Riot rate limits or request count.
+• No quick-scan, no season sampling, no destructive DB migration.
+• Already cached match bodies and match ID pages remain in SQLite.
+
+UPDATING
+• Stop the old instance and BACK UP config.json, primecast.sqlite3,
+  static/logos/, static/lanes/, static/cached_rank_icons/.
+• Extract ZIP over the program folder; preserve existing user data.
+• Launch STARTEN.cmd. http://127.0.0.1:8767/pregame?demo=1 is a demo.
+• For in-OBS updates, refresh the browser source once to bypass cached HTML.
+
+If downloads are blocked, place role PNGs manually here:
+  static/lanes/top.png
+  static/lanes/jungle.png
+  static/lanes/mid.png
+  static/lanes/adc.png
+  static/lanes/support.png
+No extra Python packages are required.
